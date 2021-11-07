@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from "react-dom";
+import { Canvas } from "@react-three/fiber";
+import { BoxGeometry, MeshStandardMaterial } from "three";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+function App() {
+    return (
+        <div id="canvas-container">
+            <Canvas>
+                <mesh>
+                    <ambientLight intensity={0.1} />
+                    <directionalLight color="red" position={[0, 0, 5]} />
+                    <boxGeometry />
+                    <meshStandardMaterial />
+                </mesh>
+            </Canvas>
+        </div>
+    );
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(<App />, document.getElementById("root"));
