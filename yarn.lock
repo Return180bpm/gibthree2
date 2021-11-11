@@ -1488,7 +1488,52 @@
     "schema-utils" "^2.6.5"
     "source-map" "^0.7.3"
 
-"@react-three/fiber@^7.0.17":
+"@react-spring/animated@~9.3.0":
+  "integrity" "sha512-QvuyW77eDvLhdJyO6FFldlWlvnuKK2cpOx4+Zr962RyT/0IO1tbNDRO6G1vM8va6mbv6tmfYmRGKmKYePN3kVg=="
+  "resolved" "https://registry.npmjs.org/@react-spring/animated/-/animated-9.3.0.tgz"
+  "version" "9.3.0"
+  dependencies:
+    "@react-spring/shared" "~9.3.0"
+    "@react-spring/types" "~9.3.0"
+
+"@react-spring/core@~9.3.0":
+  "integrity" "sha512-SZQOIX7wkIagmucAi7zxqGGIb9A60o9n5922UrWo8Kl3FdG7FgrNwqr0kOI43/pMFeL70/PXwFhBatB03N5ctw=="
+  "resolved" "https://registry.npmjs.org/@react-spring/core/-/core-9.3.0.tgz"
+  "version" "9.3.0"
+  dependencies:
+    "@react-spring/animated" "~9.3.0"
+    "@react-spring/shared" "~9.3.0"
+    "@react-spring/types" "~9.3.0"
+
+"@react-spring/rafz@~9.3.0":
+  "integrity" "sha512-FD04d2TNb3xOZ6+04qwDmC3d0H4X6gvhsxU71/nSm4PPYRqFzZEolcVPmrHlbGzco3bvXKI+Kp2pIrpXLPUJFA=="
+  "resolved" "https://registry.npmjs.org/@react-spring/rafz/-/rafz-9.3.0.tgz"
+  "version" "9.3.0"
+
+"@react-spring/shared@~9.3.0":
+  "integrity" "sha512-7ZFY2Blu/wxbLGcYvQavyLUVi9bK/is1bsn11qZ9AaZb4iucRyIf2jgjBfKZFCq4qgi7S/7QmDQG7sucUyLELg=="
+  "resolved" "https://registry.npmjs.org/@react-spring/shared/-/shared-9.3.0.tgz"
+  "version" "9.3.0"
+  dependencies:
+    "@react-spring/rafz" "~9.3.0"
+    "@react-spring/types" "~9.3.0"
+
+"@react-spring/three@^9.3.0":
+  "integrity" "sha512-RKMXXdcNK0nbwLbmle/0KT/idGGpOxvI5lT1KtN8R3cgJWQBKYWVtzg+B/RgmQVNxO/QNlsKGWTjURockTRSVQ=="
+  "resolved" "https://registry.npmjs.org/@react-spring/three/-/three-9.3.0.tgz"
+  "version" "9.3.0"
+  dependencies:
+    "@react-spring/animated" "~9.3.0"
+    "@react-spring/core" "~9.3.0"
+    "@react-spring/shared" "~9.3.0"
+    "@react-spring/types" "~9.3.0"
+
+"@react-spring/types@~9.3.0":
+  "integrity" "sha512-q4cDr2RSPblXMD3Rxvk6qcC7nmhhfV2izEBP06hb8ZCXznA6qJirG3RMpi29kBtEQiw1lWR59hAXKhauaPtbOA=="
+  "resolved" "https://registry.npmjs.org/@react-spring/types/-/types-9.3.0.tgz"
+  "version" "9.3.0"
+
+"@react-three/fiber@^7.0.17", "@react-three/fiber@>=6.0":
   "integrity" "sha512-RUnRoGKvlr7Bqd1lOywJabdGLIBiDc5jLpEsCFJwyvZoViYqwsIQKrBhwx56Y5FdlUlwY8y2ZdcQRNlHGBZXjA=="
   "resolved" "https://registry.npmjs.org/@react-three/fiber/-/fiber-7.0.17.tgz"
   "version" "7.0.17"
@@ -9412,7 +9457,7 @@
   dependencies:
     "debounce" "^1.2.0"
 
-"react@*", "react@^17.0.2", "react@>= 16", "react@>=16.13", "react@>=16.8", "react@>=17.0", "react@17.0.2":
+"react@*", "react@^16.8.0  || ^17.0.0", "react@^17.0.2", "react@>= 16", "react@>=16.11", "react@>=16.13", "react@>=16.8", "react@>=17.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
