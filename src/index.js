@@ -1,20 +1,11 @@
+import React from "react";
 import ReactDOM from "react-dom";
-import { Canvas } from "@react-three/fiber";
-import { BoxGeometry, MeshStandardMaterial } from "three";
+import "./index.css";
+import App from "./App";
 
-function App() {
-    return (
-        <div id="canvas-container">
-            <Canvas>
-                <mesh>
-                    <ambientLight intensity={0.1} />
-                    <directionalLight color="red" position={[0, 0, 5]} />
-                    <boxGeometry />
-                    <meshStandardMaterial />
-                </mesh>
-            </Canvas>
-        </div>
-    );
-}
-
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById("root")
+);

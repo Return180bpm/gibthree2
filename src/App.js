@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Canvas } from "@react-three/fiber";
+import { Box, Plane, OrbitControls } from "@react-three/drei";
+
+function Scene() {
+    return (
+        <>
+            <OrbitControls />
+            <ambientLight />
+            <pointLight position={[-1, 2, 4]} />
+            <Ground></Ground>
+            <Cube size={[1, 1, 1]} pos={[0, 0, 0]} color="pink" />
+            <Box args={[2, 2, 1]} position={[0, 5, 0]}>
+                <meshPhongMaterial color="black"></meshPhongMaterial>
+            </Box>
+        </>
+    );
+}
+
+//#TODO Why are props not working?
+function Cube(size, pos, color) {
+    return (
+        <mesh position={[1, 1, 1]}>
+            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+            <meshStandardMaterial attach="material" color={"pink"} />
+        </mesh>
+    );
+}
+
+function Ground(size, rotation, color) {
+    return <Plane args={[20, 20]} rotation={[-Math.PI / 2, 0, 0]} />;
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Canvas>
+            <Scene />
+        </Canvas>
+    );
 }
 
 export default App;
