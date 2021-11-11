@@ -1,27 +1,41 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
-import { Box, Plane, PerspectiveCamera } from "@react-three/drei";
+import { Box, Plane, OrbitControls } from "@react-three/drei";
+
+function Scene() {
+    return (
+        <>
+            <OrbitControls />
+            <ambientLight />
+            <pointLight position={[-1, 2, 4]} />
+            <Ground></Ground>
+            <Cube size={[1, 1, 1]} pos={[0, 0, 0]} color="pink" />
+            <Box args={[2, 2, 1]} position={[0, 5, 0]}>
+                <meshPhongMaterial color="black"></meshPhongMaterial>
+            </Box>
+        </>
+    );
+}
+
+//#TODO Why are props not working?
+function Cube(size, pos, color) {
+    return (
+        <mesh position={[1, 1, 1]}>
+            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+            <meshStandardMaterial attach="material" color={"pink"} />
+        </mesh>
+    );
+}
+
+function Ground(size, rotation, color) {
+    return <Plane args={[20, 20]} rotation={[-Math.PI / 2, 0, 0]} />;
+}
 
 function App() {
     return (
-        <div id="canvas-container">
-            <Canvas>
-                {/* <PerspectiveCamera
-                    makeDefault
-                    position={[0, 5, -15]}
-                    fov={45}
-                    aspect={window.innerWidth / window.innerHeight}
-                    near={1}
-                    far={1000}
-                /> */}
-                <ambientLight intensity={0.1} />
-                <directionalLight color="red" position={[0, 0, 5]} />
-                <Plane args={[20, 20]} />
-                <Box args={[5, 5, 5]}>
-                    <meshPhongMaterial attach="material" color="#f3f3f3" />
-                </Box>
-            </Canvas>
-        </div>
+        <Canvas>
+            <Scene />
+        </Canvas>
     );
 }
 
