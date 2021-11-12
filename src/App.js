@@ -39,33 +39,38 @@ function CubeWall({ width, height }) {
 
     for (let row = 0; row < height; row++) {
         // const element = height[row];
-        for (let col = 1; col <= width; col++) {
+        for (let col = 0; col < width; col++) {
             // const element = width[col];
             if (
-                (row % 2 === 0 && col % 2 === 1) ||
-                (row % 2 === 1 && col % 2 === 0)
+                (row % 2 === 0 && col % 2 === 0) ||
+                (row % 2 === 1 && col % 2 === 1)
             ) {
+                const interPolNum =
+                    (cubeArr.length * 256) / ((width / 2) * height);
+                const hex = d => Number(d).toString(16).padStart(2, "0");
+                const currentColor = `#ff${hex(Math.floor(interPolNum))}ff`;
                 cubeArr.push(
                     <Cube
                         key={cubeArr.length}
                         size={[1, 1, 1]}
                         pos={[col - 10, row + 0.5, -width / 2]}
-                        color1="lime"
+                        color1={currentColor}
                         color2="black"
+                        rotationSpeed={(row * col) / 1000 + 0.002}
                     ></Cube>
                 );
             }
         }
     }
-    return <>{cubeArr.map(cube => cube)}</>;
+    return <>{cubeArr && cubeArr.map(cube => cube)}</>;
 }
 
 //#TODO Why are props not working?
 // function Cube(size, pos, color) {
-function Cube({ size, pos, color1, color2 }) {
+function Cube({ size, pos, color1, color2, rotationSpeed = 0.01 }) {
     const [isBig, setIsBig] = useState(false);
     const [active, setActive] = useState(0);
-
+    const [isHovered, setIsHovered] = useState(false);
     // const { spring, scale } = useSpring({
     //     spring: active,
 
@@ -80,13 +85,14 @@ function Cube({ size, pos, color1, color2 }) {
     const scale = spring.to([0, 1], [1, 5]);
     // const position = spring.to([0, 1], [pos, [0, 0, 0]]);
     const rotation = spring.to([0, 1], [0, Math.PI]);
+    // Can I have this and also change the color when I'm hovering?
     const color = spring.to([0, 1], [color1, color2]);
 
     const ref = useRef();
 
-    // useFrame(() => {
-    //     ref.current.rotation.x += 0.01;
-    // });
+    useFrame(() => {
+        ref.current.rotation.y += rotationSpeed;
+    });
 
     return (
         // Taken from https://gracious-keller-98ef35.netlify.app/docs/recipes/animating-with-react-spring/
@@ -107,19 +113,6 @@ function Cube({ size, pos, color1, color2 }) {
                     color={color}
                 />
             </a.mesh>
-            {/* <a.mesh
-                rotation-y={rotation}
-                scale-x={scale}
-                scale-z={scale}
-                onClick={() => setActive(Number(!active))}
-            >
-                <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-                <a.meshStandardMaterial
-                    roughness={0.5}
-                    attach="material"
-                    color={color}
-                />
-            </a.mesh> */}
         </a.group>
     );
 }
