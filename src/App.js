@@ -16,7 +16,13 @@ function Scene() {
             <pointLight position={[-1, 2, 4]} />
             <Stars />
             <Ground></Ground>
-            <Cube size={[1, 1, 1]} pos={[0, 1, 0]} firstColor="lime" />
+            <Cube
+                size={[1, 1, 1]}
+                pos={[20, 5, 0]}
+                color1="lime"
+                color2="black"
+            />
+            <CubeWall width={20} height={10} />
             {/* <Cube
                 size={[1, 8, 1]}
                 pos={[0, 5, 5]}
@@ -27,9 +33,36 @@ function Scene() {
     );
 }
 
+// wall out of cubes
+function CubeWall({ width, height }) {
+    let cubeArr = [];
+
+    for (let row = 0; row < height; row++) {
+        // const element = height[row];
+        for (let col = 1; col <= width; col++) {
+            // const element = width[col];
+            if (
+                (row % 2 === 0 && col % 2 === 1) ||
+                (row % 2 === 1 && col % 2 === 0)
+            ) {
+                cubeArr.push(
+                    <Cube
+                        key={cubeArr.length}
+                        size={[1, 1, 1]}
+                        pos={[col - 10, row + 0.5, -width / 2]}
+                        color1="lime"
+                        color2="black"
+                    ></Cube>
+                );
+            }
+        }
+    }
+    return <>{cubeArr.map(cube => cube)}</>;
+}
+
 //#TODO Why are props not working?
 // function Cube(size, pos, color) {
-function Cube({ size, pos, firstColor }) {
+function Cube({ size, pos, color1, color2 }) {
     const [isBig, setIsBig] = useState(false);
     const [active, setActive] = useState(0);
 
@@ -39,13 +72,15 @@ function Cube({ size, pos, firstColor }) {
     //     scale: isBig ? 3 : 1,
     //     config: config.wobbly,
     // });
-    const { spring } = useSpring({
+    const { spring, position } = useSpring({
         spring: active,
-        config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
+        config: { mass: 3, tension: 600, friction: 50, precision: 0.0001 },
+        position: active ? [0, 0, 0] : pos,
     });
     const scale = spring.to([0, 1], [1, 5]);
+    // const position = spring.to([0, 1], [pos, [0, 0, 0]]);
     const rotation = spring.to([0, 1], [0, Math.PI]);
-    const color = spring.to([0, 1], [firstColor, "#e45858"]);
+    const color = spring.to([0, 1], [color1, color2]);
 
     const ref = useRef();
 
@@ -54,7 +89,8 @@ function Cube({ size, pos, firstColor }) {
     // });
 
     return (
-        <a.group position={pos}>
+        // Taken from https://gracious-keller-98ef35.netlify.app/docs/recipes/animating-with-react-spring/
+        <a.group position={position}>
             <a.mesh
                 ref={ref}
                 scale-x={scale}
