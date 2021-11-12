@@ -22,47 +22,113 @@ function Scene() {
                 color1="lime"
                 color2="black"
             />
+            <Ball
+                radius={2}
+                ws={10}
+                hs={3}
+                pos={[10, 3, 0]}
+                color1="lime"
+                color2="black"
+            />
+            <Circle
+                pos={[0, 0.1, 0]}
+                r={10}
+                segments={7}
+                rotation={[-Math.PI / 2, 0, 0]}
+                color1={"midnightblue"}
+            />
+            <Cylinder
+                pos={[0, 5, 0]}
+                rTop={4}
+                rBottom={1}
+                h={10}
+                rSegments={7}
+                hSegments={7}
+                isOpen={false}
+                rotation={[0, 0, 0]}
+                color1={"grey"}
+            />
+            <Columns amount={20} />
             <CubeWall width={20} height={10} />
-            {/* <Cube
-                size={[1, 8, 1]}
-                pos={[0, 5, 5]}
-                rotation={[Math.PI / 3, 0, 0]}
-                color="black"
-            /> */}
         </>
     );
 }
 
-// wall out of cubes
-function CubeWall({ width, height }) {
-    let cubeArr = [];
+function getRandomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+const hex = d => Number(d).toString(16).padStart(2, "0");
+// Interpolation functions from https://www.trysmudford.com/blog/linear-interpolation-functions/
+const lerp = (x, y, a) => x * (1 - a) + y * a;
+const clamp = (a, min = 0, max = 1) => Math.min(max, Math.max(min, a));
+const invlerp = (x, y, a) => clamp((a - x) / (y - x));
+const range = (x1, y1, x2, y2, a) => lerp(x2, y2, invlerp(x1, y1, a));
 
-    for (let row = 0; row < height; row++) {
-        // const element = height[row];
-        for (let col = 0; col < width; col++) {
-            // const element = width[col];
-            if (
-                (row % 2 === 0 && col % 2 === 0) ||
-                (row % 2 === 1 && col % 2 === 1)
-            ) {
-                const interPolNum =
-                    (cubeArr.length * 256) / ((width / 2) * height);
-                const hex = d => Number(d).toString(16).padStart(2, "0");
-                const currentColor = `#ff${hex(Math.floor(interPolNum))}ff`;
-                cubeArr.push(
-                    <Cube
-                        key={cubeArr.length}
-                        size={[1, 1, 1]}
-                        pos={[col - 10, row + 0.5, -width / 2]}
-                        color1={currentColor}
-                        color2="black"
-                        rotationSpeed={(row * col) / 1000 + 0.002}
-                    ></Cube>
-                );
-            }
-        }
+function Columns({ amount }) {
+    const colArr = [];
+    for (let col = 0; col < amount; col++) {
+        // const element = amount[col];
+        const x = getRandomInRange(-100, 100);
+        const y = getRandomInRange(-200, -20);
+        const z = getRandomInRange(-100, 100);
+        const h = getRandomInRange(10, 100);
+        const colorInterpol = hex(Math.round(range(-200, -20, 0, 256, y)));
+        colArr.push(
+            <Cylinder
+                pos={[x, y, z]}
+                rTop={getRandomInRange(1, 20)}
+                rBottom={getRandomInRange(1, 20)}
+                h={h}
+                rSegments={getRandomInRange(3, 20)}
+                hSegments={7}
+                isOpen={false}
+                rotation={[0, 0, 0]}
+                color1={`#${colorInterpol}${colorInterpol}${colorInterpol}`}
+            />
+        );
     }
-    return <>{cubeArr && cubeArr.map(cube => cube)}</>;
+    return <>{colArr.map(col => col)}</>;
+}
+
+function Planes({ amount }) {}
+
+function Cylinder({
+    pos,
+    rTop,
+    rBottom,
+    h,
+    rSegments,
+    hSegments,
+    isOpen,
+    rotation,
+    color1,
+}) {
+    return (
+        <mesh position={pos} rotation={rotation}>
+            <cylinderBufferGeometry
+                args={[rTop, rBottom, h, rSegments, hSegments, isOpen]}
+            />
+            <meshStandardMaterial color={color1}></meshStandardMaterial>
+        </mesh>
+    );
+}
+
+function Circle({ pos, r, segments, rotation, color1 }) {
+    return (
+        <mesh position={pos} rotation={rotation}>
+            <circleBufferGeometry args={[r, segments]} />
+            <meshStandardMaterial color={color1}></meshStandardMaterial>
+        </mesh>
+    );
+}
+
+function Ball({ pos, r, ws, hs, color1, color2 }) {
+    return (
+        <mesh position={pos}>
+            <sphereBufferGeometry args={[r, ws, hs]} />
+            <meshStandardMaterial color={color1} />
+        </mesh>
+    );
 }
 
 //#TODO Why are props not working?
@@ -138,6 +204,38 @@ function CubeDrei({ size, pos, color }) {
             ></a.meshPhongMaterial>
         </Box>
     );
+}
+
+// wall out of cubes
+function CubeWall({ width, height }) {
+    let cubeArr = [];
+
+    for (let row = 0; row < height; row++) {
+        // const element = height[row];
+        for (let col = 0; col < width; col++) {
+            // const element = width[col];
+            if (
+                (row % 2 === 0 && col % 2 === 0) ||
+                (row % 2 === 1 && col % 2 === 1)
+            ) {
+                const interPolNum =
+                    (cubeArr.length * 256) / ((width / 2) * height);
+
+                const currentColor = `#00${hex(Math.floor(interPolNum))}00`;
+                cubeArr.push(
+                    <Cube
+                        key={cubeArr.length}
+                        size={[1, 1, 1]}
+                        pos={[col - 10, row + 0.5, -width / 2]}
+                        color1={currentColor}
+                        color2="black"
+                        rotationSpeed={(row * col) / 2000 + 0.002}
+                    ></Cube>
+                );
+            }
+        }
+    }
+    return <>{cubeArr && cubeArr.map(cube => cube)}</>;
 }
 
 function Ground(size, rotation, color) {
