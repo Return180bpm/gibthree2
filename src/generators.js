@@ -33,38 +33,32 @@ function Columns({ amount }) {
 function OscillatingShape({ num = 10 }) {
     const shapes = [];
     let ref = useRef();
-    const size = [1, 1, 1];
-    let y = 0;
+    const sizeOfPoint = [1, 1, 1];
     let yV = 0;
     let blue = 0;
 
     const vec = new THREE.Vector3();
 
     useFrame(() => {
-        // for (let i = 0; i < refArr.length; i++) {
-        //     const shape = refArr[i];
-
-        //     shape.position.lerp(vec.set(0, Math.sin(yV), 0), 0.1);
-        //     yV += 0.1;
-        // }
         for (let i = 0; i < ref.current.children.length; i++) {
             const shape = ref.current.children[i];
-            // modifyng position of mesh within group
-            // why does this give a different result?
-            // shape.children[0].position.lerp(
-            //     vec.set(0, Math.sin(yV + i), 0),
-            //     0.1
-            // );
-            // modifyng position of group
+
+            // WAVES
+            // simple sine wave
             shape.position.lerp(
-                vec.set(
-                    shape.position.x,
-                    Math.sin(yV + i),
-                    0.5 * Math.sin(yV + i)
-                ),
+                vec.set(shape.position.x, Math.sin(yV + i), shape.position.z),
                 1
             );
-            // crazy wavez
+            // sine wave with a little wobble on the z-axis
+            // shape.position.lerp(
+            //     vec.set(
+            //         shape.position.x,
+            //         Math.sin(yV + i),
+            //         0.5 * Math.sin(yV + i)
+            //     ),
+            //     1
+            // );
+            // crazy irregular wavez in all idrections
             // shape.position.lerp(
             //     vec.set(
             //         shape.position.x,
@@ -83,23 +77,33 @@ function OscillatingShape({ num = 10 }) {
             //     ),
             //     1
             // );
+
+            // CHANGE COLOR based on coordinates. different effects
             blue = range(-1, 1, 0, 10, !vec.y || Math.sin(shape.position.y));
             // blue = vec.y;
+            // SET the new color. 2 ways
+            // shape.material.color = new THREE.Color(0, 0, blue);
+            shape.material.color.b = blue;
 
-            shape.material.color = new THREE.Color(0, 0, blue);
+            //DEFORM
+            shape.scale.y = range(
+                -1,
+                1,
+                0.8,
+                1.2,
+                Math.sin(shape.position.y * 5)
+            );
 
+            // Y VELOCITY. how fast it's going
             yV += 0.004;
         }
     });
 
     useMemo(() => {
         for (let i = 0; i < num; i++) {
-            // const element = num[i];
-
             shapes.push(
-                // <group position={[i, y, 0]} key={i}>
-                <mesh position={[i, y, 0]} key={i}>
-                    <boxBufferGeometry args={size} />
+                <mesh position={[i, 0, 0]} key={i}>
+                    <boxBufferGeometry args={sizeOfPoint} />
                     <meshStandardMaterial
                         roughness={0.5}
                         attach="material"
@@ -107,28 +111,18 @@ function OscillatingShape({ num = 10 }) {
                     />
                 </mesh>
             );
-            // shapes.push(
-            //     <group position={[i, y, 0]} key={i}>
-            //         <mesh>
-            //             <boxBufferGeometry args={size} />
-            //             <meshStandardMaterial
-            //                 roughness={0.5}
-            //                 attach="material"
-            //                 color={"aquamarine"}
-            //             />
-            //         </mesh>
-            //     </group>
-            // );
         }
-    }, [num, y, shapes]);
+    }, [num, shapes]);
 
+    // return a group representing the whole oscillation. position it around 0 on the x-axis
     return (
-        <group ref={ref} position={[(-size[0] * num) / 2, 3, 0]}>
+        <group ref={ref} position={[(-sizeOfPoint[0] * num) / 2, 3, 0]}>
             {shapes.map(shape => shape)}
         </group>
     );
 }
 
+// TODO
 function Planes({ amount }) {}
 
 // wall out of cubes
