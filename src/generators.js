@@ -107,7 +107,7 @@ function OscillatingShape({ num = 10 }) {
                     <meshStandardMaterial
                         roughness={0.5}
                         attach="material"
-                        color={"aquamarine"}
+                        color={"black"}
                     />
                 </mesh>
             );
@@ -117,7 +117,7 @@ function OscillatingShape({ num = 10 }) {
     // return a group representing the whole oscillation. position it around 0 on the x-axis
     return (
         <group ref={ref} position={[(-sizeOfPoint[0] * num) / 2, 3, 0]}>
-            {shapes.map(shape => shape)}
+            {shapes.length && shapes.map(shape => shape)}
         </group>
     );
 }
@@ -129,11 +129,15 @@ function Planes({ amount }) {}
 function CubeWall({ width, height }) {
     let cubeArr = [];
     let colorMod;
+    let v = 0;
+    const sizeOfCube = [0.5, 0.5, 0.5];
+    // const separation = 1;
+    let group = useRef();
 
+    // CREATE initial wall
     for (let row = 0; row < height; row++) {
-        // const element = height[row];
         for (let col = 0; col < width; col++) {
-            // const element = width[col];
+            //only put in every other cube
             if (
                 (row % 2 === 0 && col % 2 === 0) ||
                 (row % 2 === 1 && col % 2 === 1)
@@ -146,8 +150,12 @@ function CubeWall({ width, height }) {
                 cubeArr.push(
                     <Cube
                         key={cubeArr.length}
-                        size={[1, 1, 1]}
-                        pos={[col - 10, row + 0.5, -width / 2]}
+                        size={sizeOfCube}
+                        pos={[
+                            col * sizeOfCube[0],
+                            row * sizeOfCube[1] + sizeOfCube[1] * 0.5,
+                            0,
+                        ]}
                         posXY={{ x: col, y: row }}
                         color1={currentColor}
                         color2="black"
@@ -158,7 +166,33 @@ function CubeWall({ width, height }) {
             }
         }
     }
-    return <>{cubeArr && cubeArr.map(cube => cube)}</>;
+
+    // ANIMATE wall
+    useFrame(() => {
+        // could this be faster?
+        //  for (let row = 0; row < height; row++) {
+        // for (let col = 0; col < width; col++) {
+
+        // }}
+        for (let i = 0; i < group.current.children.length; i++) {
+            const cube = group.current.children[i];
+
+            cube.scale.z = range(-1, 1, 0.8, 2, Math.sin(i + v));
+            cube.children[0].material.color.g = range(
+                -1,
+                1,
+                0.2,
+                1,
+                Math.sin(i + v * 5)
+            );
+        }
+        v += 0.01;
+    });
+    return (
+        <group ref={group} position={[(-sizeOfCube[0] * width) / 2, 0, -10]}>
+            {cubeArr.length && cubeArr.map(cube => cube)}
+        </group>
+    );
 }
 
 export { Columns, Planes, CubeWall, OscillatingShape };
