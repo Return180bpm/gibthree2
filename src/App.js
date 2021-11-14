@@ -2,16 +2,19 @@ import "./App.css";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Stars, OrbitControls } from "@react-three/drei";
 import { Ground, Cylinder, Circle, Ball, Cube } from "./shapes.js";
-import { Columns, Planes, CubeWall } from "./generators.js";
+import { Columns, Planes, CubeWall, OscillatingShape } from "./generators.js";
 
 function Scene() {
     const {
         camera,
         gl: { domElement },
     } = useThree();
+
+    // camera.lookAt(0, 5, 0);
+
     return (
         <>
-            <OrbitControls />
+            <OrbitControls target={[0, 5, 0]} />
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
@@ -38,7 +41,7 @@ function Scene() {
                 color1={"midnightblue"}
             />
             <Cylinder
-                pos={[0, 5, 0]}
+                pos={[-8, 5, 8]}
                 rTop={4}
                 rBottom={1}
                 h={10}
@@ -48,15 +51,18 @@ function Scene() {
                 rotation={[0, 0, 0]}
                 color1={"grey"}
             />
-            <Columns amount={20} />
-            <CubeWall width={20} height={10} />
+            {/* <Columns amount={20} /> */}
+            {/* <CubeWall width={20} height={20} /> */}
+            <OscillatingShape num={30} />
         </>
     );
 }
 
 function App() {
     return (
-        <Canvas>
+        <Canvas
+            camera={{ fov: 100, position: [0, 5, 5], lookat: [-10, 30, -10] }}
+        >
             <Scene />
         </Canvas>
     );

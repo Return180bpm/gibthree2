@@ -47,12 +47,20 @@ function Ball({ pos, r, ws, hs, color1, color2 }) {
     );
 }
 
-//#TODO Why are props not working?
-// function Cube(size, pos, color) {
-function Cube({ size, pos, color1, color2, rotationSpeed = 0.01 }) {
+function Cube({
+    size = [1, 1, 1],
+    pos = [0, 0, 0],
+    posXY = { x: 1, y: 1 },
+    color1 = "white",
+    color2 = "aquamarine",
+    rotV = 0.01,
+    rotA = 0.005,
+}) {
     const [isBig, setIsBig] = useState(false);
     const [active, setActive] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
+
+    // following beb's video tutorial
     // const { spring, scale } = useSpring({
     //     spring: active,
 
@@ -72,8 +80,20 @@ function Cube({ size, pos, color1, color2, rotationSpeed = 0.01 }) {
 
     const ref = useRef();
 
-    useFrame(() => {
-        ref.current.rotation.y += rotationSpeed;
+    useFrame(({ clock }) => {
+        // changing color --- how???
+        // wobble + wave, to be used together. Works inside  CubeWall
+        // ref.current.rotation.x = Math.sin(ref.current.position.z);
+        // ref.current.position.z =
+        //     // Math.sin(ref.current.position.x) + clock.getElapsedTime() / 1000;
+        //     // Math.sin(posXY.y);
+        //     Math.sin(10 * posXY.x * posXY.y + clock.getElapsedTime() * 9) / 10;
+        // reversing rotation
+        // ref.current.rotation.y += rotV;
+        // rotV += rotA;
+        // if (rotV > 0.005) {
+        //     rotA = -rotA;
+        // }
     });
 
     return (
