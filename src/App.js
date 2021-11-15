@@ -1,8 +1,16 @@
 import "./App.css";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Stars, OrbitControls } from "@react-three/drei";
-import { Ground, Cylinder, Circle, Ball, Cube } from "./shapes.js";
+import {
+    Ground,
+    Cylinder,
+    Circle,
+    Ball,
+    Cube,
+    CubeTextured,
+} from "./shapes.js";
 import { Columns, Planes, CubeWall, OscillatingShape } from "./generators.js";
+import { Suspense } from "react/cjs/react.production.min";
 
 function Scene() {
     return (
@@ -46,6 +54,7 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group>
+            <CubeTextured />
             {/* <Columns amount={20} /> */}
             <CubeWall width={20} height={20} />
             {/* <OscillatingShape num={30} /> */}
@@ -55,9 +64,11 @@ function Scene() {
 
 function App() {
     return (
-        <Canvas camera={{ fov: 75, position: [-10, 5, -5] }}>
-            <Scene />
-        </Canvas>
+        <Suspense fallback={null}>
+            <Canvas camera={{ fov: 75, position: [-10, 5, -5] }}>
+                <Scene />
+            </Canvas>
+        </Suspense>
     );
 }
 
