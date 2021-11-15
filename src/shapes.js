@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { TextureLoader } from "three";
+import * as THREE from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { Plane } from "@react-three/drei";
 import { useSpring, animated as a } from "@react-spring/three";
@@ -49,15 +49,15 @@ function Ball({ pos, r, ws, hs, color1, color2 }) {
 
 function CubeTextured({
     size = [1, 1, 1],
-    pos = [0, 2, 0],
+    pos = [0, 5, 0],
     color1 = "white",
     color2 = "aquamarine",
     rotV = 0.01,
     rotA = 0.005,
 }) {
     const [active, setActive] = useState(0);
-    const colorMap1 = useLoader(TextureLoader, "assets/ex1.jpg");
-    const colorMap2 = useLoader(TextureLoader, "assets/ex2.jpg");
+    const colorMap1 = useLoader(THREE.TextureLoader, "assets/ex1.jpg");
+    const colorMap2 = useLoader(THREE.TextureLoader, "assets/ex2.jpg");
 
     return (
         <mesh
@@ -68,7 +68,10 @@ function CubeTextured({
         >
             {/* <boxBufferGeometry args={size} /> */}
             <planeBufferGeometry args={[10, 10]} />
-            <meshStandardMaterial map={active ? colorMap1 : colorMap2} />
+            <meshStandardMaterial
+                map={active ? colorMap1 : colorMap2}
+                side={THREE.DoubleSide}
+            />
         </mesh>
     );
 }

@@ -19,9 +19,9 @@ import { Suspense } from "react/cjs/react.production.min";
 function Scene() {
     return (
         <>
-            <DeviceOrientationControls />
+            <DeviceOrientationControls makeDefault />
 
-            <OrbitControls makeDefault target={[5, 3, -10]} />
+            <OrbitControls target={[5, 3, -10]} />
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
