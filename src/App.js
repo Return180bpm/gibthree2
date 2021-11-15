@@ -1,6 +1,10 @@
 import "./App.css";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Stars, OrbitControls } from "@react-three/drei";
+import {
+    Stars,
+    OrbitControls,
+    DeviceOrientationControls,
+} from "@react-three/drei";
 import {
     Ground,
     Cylinder,
@@ -15,6 +19,8 @@ import { Suspense } from "react/cjs/react.production.min";
 function Scene() {
     return (
         <>
+            <DeviceOrientationControls />
+
             <OrbitControls target={[5, 3, -10]} />
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
