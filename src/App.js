@@ -21,7 +21,7 @@ function Scene() {
         <>
             <DeviceOrientationControls />
 
-            <OrbitControls target={[5, 3, -10]} />
+            {/* <OrbitControls target={[5, 3, -10]} /> */}
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
