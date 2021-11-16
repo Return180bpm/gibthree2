@@ -26,27 +26,113 @@ const propTypes = {
 function Spiral({
     position = [0, 0, 0],
     atomShape = "cube",
-    numOfAtoms = 10,
-    separation = 3,
+    numOfAtoms = 30,
+    separation = 1.5,
     angle = 5,
 }) {
-    const spiralArr = [];
+    let spiralArr = useRef([]);
+    spiralArr = spiralArr.current;
+
     let groupRef = useRef(null);
+
+    let playfactor = 0;
+    let colors = ["r", "g", "b"];
+    let colorCounter = 0;
+    let colorValue = 1;
+    let colorIndex = 0;
+    let rounds = 0;
+    let colorObj = { r: 0.2, g: 1, b: 0.4 };
+    // let colorToMod = colors[0];
+
+    let prevTime = 0,
+        currTime;
+
+    // modifies colors randomly
+    // can feel laggy
+    useFrame(({ clock }) => {
+        currTime = clock.getElapsedTime();
+        if (currTime - prevTime > 0.1) {
+            if (
+                playfactor &&
+                playfactor > groupRef.current.children.length - 1
+            ) {
+                console.log(groupRef.current.children[0].material.color);
+                playfactor = 0;
+                colorCounter++;
+                if (colorCounter % 3 === 0) {
+                    colorValue = getRandomInRange(0, 1);
+                }
+                if (colorCounter % 6 === 0) {
+                    colorValue = getRandomInRange(0.5, 0.9);
+                }
+            }
+
+            colorIndex = colorCounter % colors.length;
+
+            colorObj[colors[colorIndex]] += Math.random();
+            if (colorObj[colors[colorIndex]] > 1) {
+                colorObj[colors[colorIndex]]--;
+            }
+            groupRef.current.children[playfactor].material.color[
+                colors[colorIndex]
+            ] = colorObj[colors[colorIndex]];
+            playfactor++;
+
+            prevTime = clock.getElapsedTime();
+        }
+    });
+
+    // modifies one color at a time
+    useFrame(({ clock }) => {
+        currTime = clock.getElapsedTime();
+        if (currTime - prevTime > 0.05) {
+            if (
+                playfactor &&
+                playfactor > groupRef.current.children.length - 1
+            ) {
+                playfactor = 0;
+                colorCounter++;
+                if (colorCounter % 3 === 0) {
+                    colorValue = getRandomInRange(0, 1);
+                }
+                if (colorCounter % 6 === 0) {
+                    colorValue = getRandomInRange(0.5, 0.9);
+                }
+            }
+            colorIndex = colorCounter % colors.length;
+            groupRef.current.children[playfactor].material.color[
+                colors[colorIndex]
+            ] = colorValue;
+            playfactor++;
+
+            prevTime = clock.getElapsedTime();
+        }
+    });
 
     useMemo(() => {
         for (let i = 0; i < numOfAtoms; i++) {
             const AtomShape = randomProperty(possibleShapes);
+            const newPosition = {};
+            newPosition.x = ((i + 1) * separation * Math.sin(angle)) / 8;
+            newPosition.y = i / 2;
+            newPosition.z = ((i + 1) * separation * Math.cos(angle)) / 8;
             spiralArr[i] = (
-                <AtomShape position={[separation * i, 0, 0]} key={i} />
+                <AtomShape
+                    position={[newPosition.x, newPosition.y, newPosition.z]}
+                    key={i}
+                />
             );
+            angle -= 0.4;
+
             // spiralArr.push(<AtomShape position={[i, 0, 0]} key={i} />);
         }
-    }, [numOfAtoms]);
+    }, [numOfAtoms, separation, spiralArr]);
 
     // return a group representing the whole oscillation. position it around 0 on the x-axis
     // TODO: use boundingrect for position?
+    // alternative: position={[(-numOfAtoms * separation) / 2, 2, 0]}
     return (
-        <group ref={groupRef} position={[(-numOfAtoms * separation) / 2, 2, 0]}>
+        <group ref={groupRef} position={position}>
             {spiralArr.length && spiralArr.map(atomShape => atomShape)}
         </group>
     );

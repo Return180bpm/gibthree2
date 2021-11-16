@@ -49,7 +49,7 @@ function Ball({
     return (
         <mesh position={position}>
             <sphereBufferGeometry args={[r, ws, hs]} />
-            <meshStandardMaterial color={color1} />
+            <meshStandardMaterial attach="material" color={color1} />
         </mesh>
     );
 }
@@ -70,16 +70,14 @@ function Cube({
     const cubeRef = useRef(null);
 
     return (
-        <group position={position}>
-            <mesh ref={cubeRef}>
-                <boxBufferGeometry args={size} />
-                <meshStandardMaterial
-                    roughness={0.5}
-                    attach="material"
-                    color={color1}
-                />
-            </mesh>
-        </group>
+        <mesh ref={cubeRef} position={position}>
+            <boxBufferGeometry args={size} />
+            <meshStandardMaterial
+                roughness={0.5}
+                attach="material"
+                color={color1}
+            />
+        </mesh>
     );
 }
 
