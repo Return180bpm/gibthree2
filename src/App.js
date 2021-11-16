@@ -62,9 +62,12 @@ import { Suspense } from "react/cjs/react.production.min";
 function Scene() {
     return (
         <>
-            <DeviceOrientationControls position={[0, 0, 0]} />
-            <Ground></Ground>
-
+            <DeviceOrientationControls
+                position={[0, 15, 0]}
+                target={[0, -2, 0]}
+            >
+                <Ground></Ground>
+            </DeviceOrientationControls>
             {/* <OrbitControls target={[0, 3, 5]} /> */}
 
             <ambientLight />
@@ -99,7 +102,7 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group> */}
-            <Spiral />
+            <Spiral position={[0, -10, 5]} />
             {/* <CubeTextured /> */}
             {/* <Columns amount={20} /> */}
             {/* <CubeWall width={20} height={20} /> */}
@@ -111,7 +114,8 @@ function Scene() {
 function App() {
     return (
         <Suspense fallback={null}>
-            <Canvas camera={{ fov: 90, position: [0, 5, -15] }}>
+            {/* <Canvas camera={{ fov: 90, position: [0, 5, -15] }}> */}
+            <Canvas camera={{ fov: 90 }}>
                 <Scene />
             </Canvas>
         </Suspense>
