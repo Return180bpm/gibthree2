@@ -1,6 +1,9 @@
 import "./App.css";
+import * as THREE from "three";
+import { useEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
+    PerspectiveCamera,
     Stars,
     OrbitControls,
     DeviceOrientationControls,
@@ -16,13 +19,51 @@ import {
 import { Columns, Planes, CubeWall, OscillatingShape } from "./generators.js";
 import { Suspense } from "react/cjs/react.production.min";
 
+// TODO maybe import OrbitCOntrols manually from three/examples/jsm/etc...
+function Controls() {
+    let { gl, camera } = useThree();
+
+    camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000.0
+    );
+    camera.position.set(-5, 10, -10);
+
+    const controls = new THREE.OrbitControls(camera, gl.domElement);
+
+    const updateCameraOrbit = () => {
+        const forward = new THREE.Vector3();
+        camera.getWorldDirection(forward);
+
+        controls.target.copy(camera.position).add(forward);
+    };
+
+    controls.addEventListener("end", () => {
+        updateCameraOrbit();
+    });
+
+    updateCameraOrbit();
+
+    // useEffect(() => {
+    //     camera.fov = 75;
+    //     camera.near = 1;
+    //     camera.far = 1000;
+    //     camera.position.set([0, 5, -20]);
+    //     // camera.rotateY(60);
+    //     camera.updateProjectionMatrix();
+    // }, []);
+    return <PerspectiveCamera makeDefault></PerspectiveCamera>;
+}
 function Scene() {
     return (
         <>
             <DeviceOrientationControls makeDefault />
 
             {/* <OrbitControls target={[5, 3, -10]} /> */}
-            <OrbitControls />
+            {/* <OrbitControls /> */}
+            {/* <Controls /> */}
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
