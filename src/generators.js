@@ -1,8 +1,57 @@
+// CONTAINING ARRANGEMENTS of basic shapes
+//
 import { useRef, useMemo } from "react";
+import PropTypes from "prop-types";
+
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Ground, Cylinder, Circle, Ball, Cube } from "./shapes.js";
-import { getRandomInRange, hex, lerp, clamp, invlerp, range } from "./utils.js";
+import {
+    getRandomInRange,
+    hex,
+    lerp,
+    clamp,
+    invlerp,
+    range,
+    randomProperty,
+} from "./utils.js";
+
+const possibleShapes = {
+    cube: Cube,
+    ball: Ball,
+};
+const propTypes = {
+    atomShape: PropTypes.oneOf(Object.keys(possibleShapes)),
+};
+function Spiral({
+    position = [0, 0, 0],
+    atomShape = "cube",
+    numOfAtoms = 10,
+    separation = 3,
+    angle = 5,
+}) {
+    const spiralArr = [];
+    let groupRef = useRef(null);
+
+    useMemo(() => {
+        for (let i = 0; i < numOfAtoms; i++) {
+            const AtomShape = randomProperty(possibleShapes);
+            spiralArr[i] = (
+                <AtomShape position={[separation * i, 0, 0]} key={i} />
+            );
+            // spiralArr.push(<AtomShape position={[i, 0, 0]} key={i} />);
+        }
+    }, [numOfAtoms]);
+
+    // return a group representing the whole oscillation. position it around 0 on the x-axis
+    // TODO: use boundingrect for position?
+    return (
+        <group ref={groupRef} position={[(-numOfAtoms * separation) / 2, 2, 0]}>
+            {spiralArr.length && spiralArr.map(atomShape => atomShape)}
+        </group>
+    );
+}
+Spiral.propTypes = propTypes;
 
 function Columns({ amount }) {
     const colArr = [];
@@ -32,7 +81,7 @@ function Columns({ amount }) {
 
 function OscillatingShape({ num = 10 }) {
     const shapes = [];
-    let ref = useRef();
+    let ref = useRef(null);
     const sizeOfPoint = [1, 1, 1];
     let yV = 0;
     let blue = 0;
@@ -195,4 +244,4 @@ function CubeWall({ width, height }) {
     );
 }
 
-export { Columns, Planes, CubeWall, OscillatingShape };
+export { Columns, Planes, CubeWall, OscillatingShape, Spiral };

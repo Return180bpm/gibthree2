@@ -16,65 +16,62 @@ import {
     Cube,
     CubeTextured,
 } from "./shapes.js";
-import { Columns, Planes, CubeWall, OscillatingShape } from "./generators.js";
+import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
 import { Suspense } from "react/cjs/react.production.min";
 
+// This doesn't work yet.
+// I want to create custom controls so I can still drag and pinch while using <DeviceOrientationControls>
 // TODO maybe import OrbitCOntrols manually from three/examples/jsm/etc...
-function Controls() {
-    let { gl, camera } = useThree();
+// function Controls() {
+//     let { gl, camera } = useThree();
 
-    camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000.0
-    );
-    camera.position.set(-5, 10, -10);
+//     camera = new THREE.PerspectiveCamera(
+//         60,
+//         window.innerWidth / window.innerHeight,
+//         0.1,
+//         1000.0
+//     );
+//     camera.position.set(-5, 10, -10);
 
-    const controls = new THREE.OrbitControls(camera, gl.domElement);
+//     const controls = new THREE.OrbitControls(camera, gl.domElement);
 
-    const updateCameraOrbit = () => {
-        const forward = new THREE.Vector3();
-        camera.getWorldDirection(forward);
+//     const updateCameraOrbit = () => {
+//         const forward = new THREE.Vector3();
+//         camera.getWorldDirection(forward);
 
-        controls.target.copy(camera.position).add(forward);
-    };
+//         controls.target.copy(camera.position).add(forward);
+//     };
 
-    controls.addEventListener("end", () => {
-        updateCameraOrbit();
-    });
+//     controls.addEventListener("end", () => {
+//         updateCameraOrbit();
+//     });
 
-    updateCameraOrbit();
+//     updateCameraOrbit();
 
-    // useEffect(() => {
-    //     camera.fov = 75;
-    //     camera.near = 1;
-    //     camera.far = 1000;
-    //     camera.position.set([0, 5, -20]);
-    //     // camera.rotateY(60);
-    //     camera.updateProjectionMatrix();
-    // }, []);
-    return <PerspectiveCamera makeDefault></PerspectiveCamera>;
-}
+//     // useEffect(() => {
+//     //     camera.fov = 75;
+//     //     camera.near = 1;
+//     //     camera.far = 1000;
+//     //     camera.position.set([0, 5, -20]);
+//     //     // camera.rotateY(60);
+//     //     camera.updateProjectionMatrix();
+//     // }, []);
+//     return <PerspectiveCamera makeDefault></PerspectiveCamera>;
+// }
+
 function Scene() {
     return (
         <>
-            <DeviceOrientationControls makeDefault />
+            {/* <DeviceOrientationControls  /> */}
 
-            {/* <OrbitControls target={[5, 3, -10]} /> */}
-            {/* <OrbitControls /> */}
-            {/* <Controls /> */}
+            <OrbitControls target={[0, 3, 5]} />
+
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
             <Ground></Ground>
-            <Cube
-                size={[3, 6, 2]}
-                pos={[10, 3.1, 2]}
-                color1="lime"
-                color2="black"
-            />
-            <group position={[10, 0.1, 5]}>
+            {/* <Cube size={[5, 1, 2]} pos={[0, 2, -6]} color2="black" /> */}
+            <group position={[5, 0.1, 0]}>
                 <Ball
                     radius={2}
                     ws={10}
@@ -102,9 +99,10 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group>
-            <CubeTextured />
+            <Spiral />
+            {/* <CubeTextured /> */}
             {/* <Columns amount={20} /> */}
-            <CubeWall width={20} height={20} />
+            {/* <CubeWall width={20} height={20} /> */}
             {/* <OscillatingShape num={30} /> */}
         </>
     );
@@ -113,7 +111,7 @@ function Scene() {
 function App() {
     return (
         <Suspense fallback={null}>
-            <Canvas camera={{ fov: 75, position: [-10, 5, -5] }}>
+            <Canvas camera={{ fov: 90, position: [0, 5, -15] }}>
                 <Scene />
             </Canvas>
         </Suspense>

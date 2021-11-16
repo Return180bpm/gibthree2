@@ -38,12 +38,48 @@ function Circle({ pos, r, segments, rotation, color1 }) {
     );
 }
 
-function Ball({ pos, r, ws, hs, color1, color2 }) {
+function Ball({
+    position = [0, 0, 0],
+    r = 1,
+    ws = 8,
+    hs = 8,
+    color1 = "lime",
+    color2 = "black",
+}) {
     return (
-        <mesh position={pos}>
+        <mesh position={position}>
             <sphereBufferGeometry args={[r, ws, hs]} />
             <meshStandardMaterial color={color1} />
         </mesh>
+    );
+}
+
+// A simple cube
+// I'm not using drei cuz I might wanna animate it later
+function Cube({
+    size = [1, 1, 1],
+    position = [0, 0, 0],
+    // additional coordinates that may be used when <Cube> is embedded into a bigger structure
+    posXY = { x: 0, y: 10 },
+    color1 = "darkmagenta",
+    color2 = "aquamarine",
+    // velocity and acceleration ot be used for animations
+    v = 0.01,
+    a = 0.005,
+}) {
+    const cubeRef = useRef(null);
+
+    return (
+        <group position={position}>
+            <mesh ref={cubeRef}>
+                <boxBufferGeometry args={size} />
+                <meshStandardMaterial
+                    roughness={0.5}
+                    attach="material"
+                    color={color1}
+                />
+            </mesh>
+        </group>
     );
 }
 
@@ -75,7 +111,8 @@ function CubeTextured({
         </mesh>
     );
 }
-function Cube({
+
+function CubeAnim({
     size = [1, 1, 1],
     pos = [0, 0, 0],
     posXY = { x: 1, y: 1 },
