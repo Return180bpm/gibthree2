@@ -62,14 +62,14 @@ import { Suspense } from "react/cjs/react.production.min";
 function Scene() {
     return (
         <>
-            <DeviceOrientationControls />
+            <DeviceOrientationControls position={[0, 0, 0]} />
+            <Ground></Ground>
 
             {/* <OrbitControls target={[0, 3, 5]} /> */}
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
             <Stars />
-            <Ground></Ground>
             {/* <Cube size={[5, 1, 2]} pos={[0, 2, -6]} color2="black" /> */}
             {/* <group position={[5, 0.1, 0]}>
                 <Ball
