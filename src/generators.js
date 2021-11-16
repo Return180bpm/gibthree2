@@ -47,67 +47,84 @@ function Spiral({
     let prevTime = 0,
         currTime;
 
+    // DIFFERENT ANIMATIONS
+    //
+    // sine wave colors
+    useFrame(({ clock }) => {
+        for (let i = 0; i < groupRef.current.children.length; i++) {
+            const j = lerp(
+                0,
+                Math.PI * 2,
+                i / (groupRef.current.children.length - 1)
+            );
+            const shape = groupRef.current.children[i];
+            colorValue = range(-1, 1, 0, 20, Math.sin(j + colorCounter));
+            shape.material.color.b = colorValue;
+        }
+        colorCounter -= 0.005;
+    });
+
     // modifies colors randomly
     // can feel laggy
-    useFrame(({ clock }) => {
-        currTime = clock.getElapsedTime();
-        if (currTime - prevTime > 0.1) {
-            if (
-                playfactor &&
-                playfactor > groupRef.current.children.length - 1
-            ) {
-                console.log(groupRef.current.children[0].material.color);
-                playfactor = 0;
-                colorCounter++;
-                if (colorCounter % 3 === 0) {
-                    colorValue = getRandomInRange(0, 1);
-                }
-                if (colorCounter % 6 === 0) {
-                    colorValue = getRandomInRange(0.5, 0.9);
-                }
-            }
+    // useFrame(({ clock }) => {
+    //     currTime = clock.getElapsedTime();
+    //     if (currTime - prevTime > 0.1) {
+    //         if (
+    //             playfactor &&
+    //             playfactor > groupRef.current.children.length - 1
+    //         ) {
+    //             console.log(groupRef.current.children[0].material.color);
+    //             playfactor = 0;
+    //             colorCounter++;
+    //             if (colorCounter % 3 === 0) {
+    //                 colorValue = getRandomInRange(0, 1);
+    //             }
+    //             if (colorCounter % 6 === 0) {
+    //                 colorValue = getRandomInRange(0.5, 0.9);
+    //             }
+    //         }
 
-            colorIndex = colorCounter % colors.length;
+    //         colorIndex = colorCounter % colors.length;
 
-            colorObj[colors[colorIndex]] += Math.random();
-            if (colorObj[colors[colorIndex]] > 1) {
-                colorObj[colors[colorIndex]]--;
-            }
-            groupRef.current.children[playfactor].material.color[
-                colors[colorIndex]
-            ] = colorObj[colors[colorIndex]];
-            playfactor++;
+    //         colorObj[colors[colorIndex]] += Math.random();
+    //         if (colorObj[colors[colorIndex]] > 1) {
+    //             colorObj[colors[colorIndex]]--;
+    //         }
+    //         groupRef.current.children[playfactor].material.color[
+    //             colors[colorIndex]
+    //         ] = colorObj[colors[colorIndex]];
+    //         playfactor++;
 
-            prevTime = clock.getElapsedTime();
-        }
-    });
+    //         prevTime = clock.getElapsedTime();
+    //     }
+    // });
 
     // modifies one color at a time
-    useFrame(({ clock }) => {
-        currTime = clock.getElapsedTime();
-        if (currTime - prevTime > 0.05) {
-            if (
-                playfactor &&
-                playfactor > groupRef.current.children.length - 1
-            ) {
-                playfactor = 0;
-                colorCounter++;
-                if (colorCounter % 3 === 0) {
-                    colorValue = getRandomInRange(0, 1);
-                }
-                if (colorCounter % 6 === 0) {
-                    colorValue = getRandomInRange(0.5, 0.9);
-                }
-            }
-            colorIndex = colorCounter % colors.length;
-            groupRef.current.children[playfactor].material.color[
-                colors[colorIndex]
-            ] = colorValue;
-            playfactor++;
+    // useFrame(({ clock }) => {
+    //     currTime = clock.getElapsedTime();
+    //     if (currTime - prevTime > 0.05) {
+    //         if (
+    //             playfactor &&
+    //             playfactor > groupRef.current.children.length - 1
+    //         ) {
+    //             playfactor = 0;
+    //             colorCounter++;
+    //             if (colorCounter % 3 === 0) {
+    //                 colorValue = getRandomInRange(0, 1);
+    //             }
+    //             if (colorCounter % 6 === 0) {
+    //                 colorValue = getRandomInRange(0.5, 0.9);
+    //             }
+    //         }
+    //         colorIndex = colorCounter % colors.length;
+    //         groupRef.current.children[playfactor].material.color[
+    //             colors[colorIndex]
+    //         ] = colorValue;
+    //         playfactor++;
 
-            prevTime = clock.getElapsedTime();
-        }
-    });
+    //         prevTime = clock.getElapsedTime();
+    //     }
+    // });
 
     useMemo(() => {
         for (let i = 0; i < numOfAtoms; i++) {
@@ -119,6 +136,7 @@ function Spiral({
             spiralArr[i] = (
                 <AtomShape
                     position={[newPosition.x, newPosition.y, newPosition.z]}
+                    color="black"
                     key={i}
                 />
             );

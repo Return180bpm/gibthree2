@@ -17,14 +17,14 @@ function Cylinder({
     hSegments,
     isOpen,
     rotation,
-    color1,
+    color,
 }) {
     return (
         <mesh position={pos} rotation={rotation}>
             <cylinderBufferGeometry
                 args={[rTop, rBottom, h, rSegments, hSegments, isOpen]}
             />
-            <meshStandardMaterial color={color1}></meshStandardMaterial>
+            <meshStandardMaterial color={color}></meshStandardMaterial>
         </mesh>
     );
 }
@@ -43,13 +43,13 @@ function Ball({
     r = 1,
     ws = 8,
     hs = 8,
-    color1 = "lime",
+    color = "lime",
     color2 = "black",
 }) {
     return (
         <mesh position={position}>
             <sphereBufferGeometry args={[r, ws, hs]} />
-            <meshStandardMaterial attach="material" color={color1} />
+            <meshStandardMaterial attach="material" color={color} />
         </mesh>
     );
 }
@@ -61,7 +61,7 @@ function Cube({
     position = [0, 0, 0],
     // additional coordinates that may be used when <Cube> is embedded into a bigger structure
     posXY = { x: 0, y: 10 },
-    color1 = "darkmagenta",
+    color = "darkmagenta",
     color2 = "aquamarine",
     // velocity and acceleration ot be used for animations
     v = 0.01,
@@ -75,7 +75,7 @@ function Cube({
             <meshStandardMaterial
                 roughness={0.5}
                 attach="material"
-                color={color1}
+                color={color}
             />
         </mesh>
     );
