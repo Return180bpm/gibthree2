@@ -26,9 +26,9 @@ const propTypes = {
 function Spiral({
     position = [0, 0, 0],
     atomShape = "cube",
-    numOfAtoms = 30,
+    numOfAtoms = 100,
     separation = 1.5,
-    angle = 5,
+    angle = 1,
 }) {
     let spiralArr = useRef([]);
     spiralArr = spiralArr.current;
@@ -130,9 +130,9 @@ function Spiral({
         for (let i = 0; i < numOfAtoms; i++) {
             const AtomShape = randomProperty(possibleShapes);
             const newPosition = {};
-            newPosition.x = ((i + 1) * separation * Math.sin(angle)) / 8;
-            newPosition.y = i / 2;
-            newPosition.z = ((i + 1) * separation * Math.cos(angle)) / 8;
+            newPosition.x = ((i + 1) * separation * Math.sin(angle)) / 10;
+            newPosition.y = i / 3;
+            newPosition.z = ((i + 1) * separation * Math.cos(angle)) / 10;
             spiralArr[i] = (
                 <AtomShape
                     position={[newPosition.x, newPosition.y, newPosition.z]}
@@ -140,7 +140,8 @@ function Spiral({
                     key={i}
                 />
             );
-            angle -= 0.4;
+            // very different results with -= 9
+            angle -= 120;
 
             // spiralArr.push(<AtomShape position={[i, 0, 0]} key={i} />);
         }
