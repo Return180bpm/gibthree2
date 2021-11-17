@@ -1,6 +1,6 @@
 import "./App.css";
 import * as THREE from "three";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
     PerspectiveCamera,
@@ -24,6 +24,12 @@ import {
 } from "./shapes.js";
 import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
 import { Suspense } from "react/cjs/react.production.min";
+
+import Dat from "dat.gui";
+import init from "three-dat.gui";
+init(Dat);
+
+var gui = new Dat.GUI();
 
 // This doesn't work yet.
 // I want to create custom controls so I can still drag and pinch while using <DeviceOrientationControls>
@@ -66,7 +72,61 @@ import { Suspense } from "react/cjs/react.production.min";
 // }
 
 function Scene() {
-    const butt = useTexture("assets/normal_butt.png");
+    let cube = useRef(null);
+    let orbitcontrols = useRef(null);
+    // const perspectiveCamera = useRef(null);
+    const { camera: perspectiveCamera } = useThree();
+
+    // const butt = useTexture("assets/normal_butt.png");
+
+    useEffect(() => {
+        const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
+        perspectiveCameraFolder.add(
+            perspectiveCamera.position,
+            "x",
+            0,
+            Math.PI * 2
+        );
+        perspectiveCameraFolder.add(
+            perspectiveCamera.position,
+            "y",
+            0,
+            Math.PI * 2
+        );
+        perspectiveCameraFolder.add(
+            perspectiveCamera.position,
+            "z",
+            0,
+            Math.PI * 2
+        );
+        perspectiveCameraFolder.open();
+
+        const orbitcontrolsFolder = gui.addFolder("OrbitControls");
+        orbitcontrolsFolder.add(
+            orbitcontrols.current.target,
+            "x",
+            0,
+            Math.PI * 2
+        );
+        orbitcontrolsFolder.add(
+            orbitcontrols.current.target,
+            "y",
+            0,
+            Math.PI * 2
+        );
+        orbitcontrolsFolder.add(
+            orbitcontrols.current.target,
+            "z",
+            0,
+            Math.PI * 2
+        );
+        orbitcontrolsFolder.open();
+
+        const cubeFolder = gui.addFolder("Cube");
+        cubeFolder.add(cube.current.rotation, "x", 0, Math.PI * 2);
+        cubeFolder.add(cube.current.rotation, "y", 0, Math.PI * 2);
+        cubeFolder.add(cube.current.rotation, "z", 0, Math.PI * 2);
+    }, []);
 
     return (
         <>
@@ -82,7 +142,11 @@ function Scene() {
                 target={[0, -2, 0]}
             > */}
             {/* <OrbitControls target={[0, 0, 5]} /> */}
-            <OrbitControls />
+            <OrbitControls
+                ref={orbitcontrols}
+                position0={new THREE.Vector3(0, 40, -20)}
+            />
+            <perspectiveCamera ref={perspectiveCamera} />
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
@@ -92,8 +156,8 @@ function Scene() {
 
             <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
-                <Box position={[2, 1, 2]}>
-                    <meshStandardMaterial normalMap={butt} />
+                <Box ref={cube} position={[2, 1, 2]}>
+                    <meshStandardMaterial />
                 </Box>
             </group>
             {/* <Cube size={[5, 1, 2]} pos={[0, 2, -6]} color2="black" /> */}
