@@ -7,6 +7,12 @@ import {
     Stars,
     OrbitControls,
     DeviceOrientationControls,
+    GizmoHelper,
+    GizmoViewcube,
+    GizmoViewport,
+    Billboard,
+    Box,
+    useTexture,
 } from "@react-three/drei";
 import {
     Ground,
@@ -60,19 +66,36 @@ import { Suspense } from "react/cjs/react.production.min";
 // }
 
 function Scene() {
+    const butt = useTexture("assets/normal_butt.png");
+
     return (
         <>
-            <DeviceOrientationControls
+            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                {/* <GizmoViewcube /> */}
+                <GizmoViewport
+                    axisColors={["red", "green", "blue"]}
+                    labelColor="black"
+                />
+            </GizmoHelper>
+            {/* <DeviceOrientationControls
                 position={[0, 15, 0]}
                 target={[0, -2, 0]}
-            >
-                <Ground></Ground>
-            </DeviceOrientationControls>
-            {/* <OrbitControls target={[0, 3, 5]} /> */}
+            > */}
+            {/* <OrbitControls target={[0, 0, 5]} /> */}
+            <OrbitControls />
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
+
+            <Ground></Ground>
             <Stars />
+
+            <group position={[1, 1, 1]}>
+                <pointLight position={[0, 0, 0]} />
+                <Box position={[2, 1, 2]}>
+                    <meshStandardMaterial normalMap={butt} />
+                </Box>
+            </group>
             {/* <Cube size={[5, 1, 2]} pos={[0, 2, -6]} color2="black" /> */}
             {/* <group position={[5, 0.1, 0]}>
                 <Ball
@@ -102,7 +125,7 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group> */}
-            <Spiral position={[0, -10, 5]} />
+            {/* <Spiral position={[0, -10, 5]} /> */}
             {/* <CubeTextured /> */}
             {/* <Columns amount={20} /> */}
             {/* <CubeWall width={20} height={20} /> */}
