@@ -3,16 +3,17 @@ import * as THREE from "three";
 import { useEffect, useCallback, useLayoutEffect, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
-    PerspectiveCamera,
-    Stars,
-    OrbitControls,
-    DeviceOrientationControls,
+    useTexture,
     GizmoHelper,
     GizmoViewcube,
     GizmoViewport,
-    Billboard,
+    DeviceOrientationControls,
+    OrbitControls,
+    PerspectiveCamera,
+    Environment,
+    Stars,
     Box,
-    useTexture,
+    Loader,
 } from "@react-three/drei";
 import {
     Ground,
@@ -31,50 +32,8 @@ init(Dat);
 
 var gui = new Dat.GUI();
 
-// This doesn't work yet.
-// I want to create custom controls so I can still drag and pinch while using <DeviceOrientationControls>
-// TODO maybe import OrbitCOntrols manually from three/examples/jsm/etc...
-// function Controls() {
-//     let { gl, camera } = useThree();
-
-//     camera = new THREE.PerspectiveCamera(
-//         60,
-//         window.innerWidth / window.innerHeight,
-//         0.1,
-//         1000.0
-//     );
-//     camera.position.set(-5, 10, -10);
-
-//     const controls = new THREE.OrbitControls(camera, gl.domElement);
-
-//     const updateCameraOrbit = () => {
-//         const forward = new THREE.Vector3();
-//         camera.getWorldDirection(forward);
-
-//         controls.target.copy(camera.position).add(forward);
-//     };
-
-//     controls.addEventListener("end", () => {
-//         updateCameraOrbit();
-//     });
-
-//     updateCameraOrbit();
-
-//     // useEffect(() => {
-//     //     camera.fov = 75;
-//     //     camera.near = 1;
-//     //     camera.far = 1000;
-//     //     camera.position.set([0, 5, -20]);
-//     //     // camera.rotateY(60);
-//     //     camera.updateProjectionMatrix();
-//     // }, []);
-//     return <PerspectiveCamera makeDefault></PerspectiveCamera>;
-// }
-
 function Scene() {
     let cube = useRef(null);
-    // let orbitcontrols = useRef(null);
-    // const perspectiveCamera = useRef(null);
     const { camera: perspectiveCamera } = useThree();
 
     // const butt = useTexture("assets/normal_butt.png");
@@ -131,13 +90,24 @@ function Scene() {
             > */}
             <OrbitControls ref={orbitcontrols} target={[5, 0, 0]} />
 
-            <perspectiveCamera ref={perspectiveCamera} />
-
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
 
+            <Environment
+                background={true} // Whether to affect scene.background
+                files={[
+                    "px.png",
+                    "nx.png",
+                    "py.png",
+                    "ny.png",
+                    "pz.png",
+                    "nz.png",
+                ]} // Array of cubemap files OR single equirectangular file
+                path={"assets/envmaps/gamrig_2k/"} // Path to the above file(s)
+            />
+
             <Ground></Ground>
-            <Stars />
+            {/* <Stars /> */}
 
             <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
@@ -185,13 +155,54 @@ function Scene() {
 
 function App() {
     return (
-        <Suspense fallback={null}>
-            {/* <Canvas camera={{ fov: 90, position: [0, 5, -15] }}> */}
+        <>
             <Canvas camera={{ fov: 90, position: [0, 0.4, 6.2] }}>
-                <Scene />
+                <Suspense fallback={null}>
+                    <Scene />
+                </Suspense>
             </Canvas>
-        </Suspense>
+            <Loader />
+        </>
     );
 }
 
 export default App;
+
+// TODO: create custom controls so I can still drag and pinch while using <DeviceOrientationControls>
+// The below version doesn't work yet.
+// function Controls() {
+//     let { gl, camera } = useThree();
+
+//     camera = new THREE.PerspectiveCamera(
+//         60,
+//         window.innerWidth / window.innerHeight,
+//         0.1,
+//         1000.0
+//     );
+//     camera.position.set(-5, 10, -10);
+
+//     const controls = new THREE.OrbitControls(camera, gl.domElement);
+
+//     const updateCameraOrbit = () => {
+//         const forward = new THREE.Vector3();
+//         camera.getWorldDirection(forward);
+
+//         controls.target.copy(camera.position).add(forward);
+//     };
+
+//     controls.addEventListener("end", () => {
+//         updateCameraOrbit();
+//     });
+
+//     updateCameraOrbit();
+
+//     // useEffect(() => {
+//     //     camera.fov = 75;
+//     //     camera.near = 1;
+//     //     camera.far = 1000;
+//     //     camera.position.set([0, 5, -20]);
+//     //     // camera.rotateY(60);
+//     //     camera.updateProjectionMatrix();
+//     // }, []);
+//     return <PerspectiveCamera makeDefault></PerspectiveCamera>;
+// }
