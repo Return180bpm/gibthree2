@@ -11,6 +11,7 @@ import {
     PerspectiveCamera,
     Box,
     Loader,
+    Text,
 } from "@react-three/drei";
 
 import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
@@ -50,44 +51,60 @@ function Scene() {
     // }, []);
     const devicecontrols = useCallback(node => {
         if (node !== null) {
-            const orbitcontrolsFolder = gui.addFolder("DeviceControls");
-            orbitcontrolsFolder.add(node.deviceOrientation, "alpha", 0, 360);
-            orbitcontrolsFolder.add(node.deviceOrientation, "beta", 0, 360);
-            orbitcontrolsFolder.add(node.deviceOrientation, "gamma", 0, 360);
-            node.update();
-            orbitcontrolsFolder.open();
+            const Folder = gui.addFolder("DeviceControls");
+            Folder.add(node.deviceOrientation, "alpha", 0, 360);
+            Folder.add(node.deviceOrientation, "beta", 0, 360);
+            Folder.add(node.deviceOrientation, "gamma", 0, 360);
+
+            // target: Array;
+            // deviceOrientation: alpha beta gamma
+        }
+    }, []);
+    const textref = useCallback(node => {
+        if (node !== null) {
+            const Folder = gui.addFolder("Text");
+            Folder.add(node.position, "x", -200, 200);
+            Folder.add(node.position, "y", -200, 200);
+            Folder.add(node.position, "z", -200, 200);
+            Folder.add(node.rotation, "x", 0, 2 * Math.PI);
+            Folder.add(node.rotation, "y", 0, 2 * Math.PI);
+            Folder.add(node.rotation, "z", 0, 2 * Math.PI);
+            Folder.add(node, "curveRadius", 0, 1000);
+            Folder.add(node, "anchorX", -300, 300);
+            Folder.add(node, "anchorY", -300, 300);
+            Folder.open();
 
             // target: Array;
             // deviceOrientation: alpha beta gamma
         }
     }, []);
 
-    useLayoutEffect(() => {
-        const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
-        perspectiveCameraFolder.add(
-            perspectiveCamera.position,
-            "x",
-            0,
-            Math.PI * 2
-        );
-        perspectiveCameraFolder.add(
-            perspectiveCamera.position,
-            "y",
-            0,
-            Math.PI * 2
-        );
-        perspectiveCameraFolder.add(
-            perspectiveCamera.position,
-            "z",
-            0,
-            Math.PI * 2
-        );
+    // useLayoutEffect(() => {
+    //     const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
+    //     perspectiveCameraFolder.add(
+    //         perspectiveCamera.position,
+    //         "x",
+    //         0,
+    //         Math.PI * 2
+    //     );
+    //     perspectiveCameraFolder.add(
+    //         perspectiveCamera.position,
+    //         "y",
+    //         0,
+    //         Math.PI * 2
+    //     );
+    //     perspectiveCameraFolder.add(
+    //         perspectiveCamera.position,
+    //         "z",
+    //         0,
+    //         Math.PI * 2
+    //     );
 
-        const cubeFolder = gui.addFolder("Cube");
-        cubeFolder.add(cube.current.rotation, "x", 0, Math.PI * 2);
-        cubeFolder.add(cube.current.rotation, "y", 0, Math.PI * 2);
-        cubeFolder.add(cube.current.rotation, "z", 0, Math.PI * 2);
-    }, []);
+    //     const cubeFolder = gui.addFolder("Cube");
+    //     cubeFolder.add(cube.current.rotation, "x", 0, Math.PI * 2);
+    //     cubeFolder.add(cube.current.rotation, "y", 0, Math.PI * 2);
+    //     cubeFolder.add(cube.current.rotation, "z", 0, Math.PI * 2);
+    // }, []);
 
     return (
         <>
@@ -108,6 +125,26 @@ function Scene() {
             <pointLight position={[-1, 2, 4]} />
 
             <Skybox />
+            <Text
+                ref={textref}
+                font={"ultra.ttf"}
+                position={[12, 106, 120]}
+                anchorX={0}
+                anchorY={0}
+                rotation={[5, 0, 0]}
+                orientation="-x+y"
+                curveRadius={50}
+                fontSize={80}
+                color="crimson" // default
+                strokeWidth={1.7}
+                strokeColor={"chartreuse"}
+                outlineWidth={"2%"}
+                outlineOffsetX={3}
+                outlineOffsetY={3}
+                outlineColor={"cyan"}
+            >
+                beb
+            </Text>
 
             {/* <Environment
                 background={false} // Whether to affect scene.background
@@ -169,7 +206,7 @@ function Scene() {
 function App() {
     return (
         <>
-            <Canvas camera={{ fov: 90, position: [0, 0.4, 6.2] }}>
+            <Canvas camera={{ fov: 120, position: [0, 0.4, 6.2] }}>
                 <Suspense fallback={null}>
                     <Scene />
                 </Suspense>
