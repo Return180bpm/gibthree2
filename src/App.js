@@ -1,5 +1,5 @@
 import "./App.css";
-import * as THREE from "three";
+import { CubeTextureLoader } from "three";
 import { useEffect, useCallback, useLayoutEffect, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
@@ -31,6 +31,28 @@ import init from "three-dat.gui";
 init(Dat);
 
 var gui = new Dat.GUI();
+
+function Skybox() {
+    const { scene } = useThree();
+    const loader = new CubeTextureLoader();
+    // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
+    // const path = "assets/envmaps/";
+    // const filenames = [
+    //     "px.png",
+    //     "nx.png",
+    //     "py.png",
+    //     "ny.png",
+    //     "pz.png",
+    //     "nz.png",
+    // ];
+    // const filepaths = filenames.map(filename => path + filename);
+    const texture = loader
+        .setPath("textures/beach_4k/")
+        .load(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"]);
+    // Set the scene background property to the resulting texture.
+    scene.background = texture;
+    return null;
+}
 
 function Scene() {
     let cube = useRef(null);
@@ -93,8 +115,10 @@ function Scene() {
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
 
-            <Environment
-                background={true} // Whether to affect scene.background
+            <Skybox />
+
+            {/* <Environment
+                background={false} // Whether to affect scene.background
                 files={[
                     "px.png",
                     "nx.png",
@@ -104,7 +128,7 @@ function Scene() {
                     "nz.png",
                 ]} // Array of cubemap files OR single equirectangular file
                 path={"assets/envmaps/gamrig_2k/"} // Path to the above file(s)
-            />
+            /> */}
 
             <Ground></Ground>
             {/* <Stars /> */}
