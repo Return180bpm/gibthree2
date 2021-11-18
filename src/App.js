@@ -1,6 +1,6 @@
 import "./App.css";
 import * as THREE from "three";
-import { useEffect, useRef } from "react";
+import { useEffect, useCallback, useLayoutEffect, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import {
     PerspectiveCamera,
@@ -73,13 +73,22 @@ var gui = new Dat.GUI();
 
 function Scene() {
     let cube = useRef(null);
-    let orbitcontrols = useRef(null);
+    // let orbitcontrols = useRef(null);
     // const perspectiveCamera = useRef(null);
     const { camera: perspectiveCamera } = useThree();
 
     // const butt = useTexture("assets/normal_butt.png");
 
-    useEffect(() => {
+    const orbitcontrols = useCallback(node => {
+        if (node !== null) {
+            const orbitcontrolsFolder = gui.addFolder("OrbitControls");
+            orbitcontrolsFolder.add(node.target, "x", 0, Math.PI * 2);
+            orbitcontrolsFolder.add(node.target, "y", 0, Math.PI * 2);
+            orbitcontrolsFolder.add(node.target, "z", 0, Math.PI * 2);
+        }
+    }, []);
+
+    useLayoutEffect(() => {
         const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
         perspectiveCameraFolder.add(
             perspectiveCamera.position,
@@ -101,27 +110,6 @@ function Scene() {
         );
         perspectiveCameraFolder.open();
 
-        const orbitcontrolsFolder = gui.addFolder("OrbitControls");
-        orbitcontrolsFolder.add(
-            orbitcontrols.current.target,
-            "x",
-            0,
-            Math.PI * 2
-        );
-        orbitcontrolsFolder.add(
-            orbitcontrols.current.target,
-            "y",
-            0,
-            Math.PI * 2
-        );
-        orbitcontrolsFolder.add(
-            orbitcontrols.current.target,
-            "z",
-            0,
-            Math.PI * 2
-        );
-        orbitcontrolsFolder.open();
-
         const cubeFolder = gui.addFolder("Cube");
         cubeFolder.add(cube.current.rotation, "x", 0, Math.PI * 2);
         cubeFolder.add(cube.current.rotation, "y", 0, Math.PI * 2);
@@ -141,11 +129,8 @@ function Scene() {
                 position={[0, 15, 0]}
                 target={[0, -2, 0]}
             > */}
-            {/* <OrbitControls target={[0, 0, 5]} /> */}
-            <OrbitControls
-                ref={orbitcontrols}
-                position0={new THREE.Vector3(0, 40, -20)}
-            />
+            <OrbitControls ref={orbitcontrols} target={[5, 0, 0]} />
+
             <perspectiveCamera ref={perspectiveCamera} />
 
             <ambientLight />
@@ -202,7 +187,7 @@ function App() {
     return (
         <Suspense fallback={null}>
             {/* <Canvas camera={{ fov: 90, position: [0, 5, -15] }}> */}
-            <Canvas camera={{ fov: 90 }}>
+            <Canvas camera={{ fov: 90, position: [0, 0.4, 6.2] }}>
                 <Scene />
             </Canvas>
         </Suspense>
