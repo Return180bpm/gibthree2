@@ -5,24 +5,14 @@ import { Canvas, useThree } from "@react-three/fiber";
 import {
     useTexture,
     GizmoHelper,
-    GizmoViewcube,
     GizmoViewport,
     DeviceOrientationControls,
     OrbitControls,
     PerspectiveCamera,
-    Environment,
-    Stars,
     Box,
     Loader,
 } from "@react-three/drei";
-import {
-    Ground,
-    Cylinder,
-    Circle,
-    Ball,
-    Cube,
-    CubeTextured,
-} from "./shapes.js";
+
 import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
 import { Suspense } from "react/cjs/react.production.min";
 
@@ -35,17 +25,7 @@ var gui = new Dat.GUI();
 function Skybox() {
     const { scene } = useThree();
     const loader = new CubeTextureLoader();
-    // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
-    // const path = "assets/envmaps/";
-    // const filenames = [
-    //     "px.png",
-    //     "nx.png",
-    //     "py.png",
-    //     "ny.png",
-    //     "pz.png",
-    //     "nz.png",
-    // ];
-    // const filepaths = filenames.map(filename => path + filename);
+
     const texture = loader
         .setPath("textures/beach_4k/")
         .load(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"]);
@@ -60,12 +40,25 @@ function Scene() {
 
     // const butt = useTexture("assets/normal_butt.png");
 
-    const orbitcontrols = useCallback(node => {
+    // const orbitcontrols = useCallback(node => {
+    //     if (node !== null) {
+    //         const orbitcontrolsFolder = gui.addFolder("OrbitControls");
+    //         orbitcontrolsFolder.add(node.target, "x", 0, Math.PI * 2);
+    //         orbitcontrolsFolder.add(node.target, "y", 0, Math.PI * 2);
+    //         orbitcontrolsFolder.add(node.target, "z", 0, Math.PI * 2);
+    //     }
+    // }, []);
+    const devicecontrols = useCallback(node => {
         if (node !== null) {
-            const orbitcontrolsFolder = gui.addFolder("OrbitControls");
-            orbitcontrolsFolder.add(node.target, "x", 0, Math.PI * 2);
-            orbitcontrolsFolder.add(node.target, "y", 0, Math.PI * 2);
-            orbitcontrolsFolder.add(node.target, "z", 0, Math.PI * 2);
+            const orbitcontrolsFolder = gui.addFolder("DeviceControls");
+            orbitcontrolsFolder.add(node.deviceOrientation, "alpha", 0, 360);
+            orbitcontrolsFolder.add(node.deviceOrientation, "beta", 0, 360);
+            orbitcontrolsFolder.add(node.deviceOrientation, "gamma", 0, 360);
+            node.update();
+            orbitcontrolsFolder.open();
+
+            // target: Array;
+            // deviceOrientation: alpha beta gamma
         }
     }, []);
 
@@ -89,7 +82,6 @@ function Scene() {
             0,
             Math.PI * 2
         );
-        perspectiveCameraFolder.open();
 
         const cubeFolder = gui.addFolder("Cube");
         cubeFolder.add(cube.current.rotation, "x", 0, Math.PI * 2);
@@ -100,17 +92,17 @@ function Scene() {
     return (
         <>
             <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                {/* <GizmoViewcube /> */}
                 <GizmoViewport
                     axisColors={["red", "green", "blue"]}
                     labelColor="black"
                 />
             </GizmoHelper>
-            {/* <DeviceOrientationControls
-                position={[0, 15, 0]}
-                target={[0, -2, 0]}
-            > */}
-            <OrbitControls ref={orbitcontrols} target={[5, 0, 0]} />
+            <DeviceOrientationControls
+                ref={devicecontrols}
+                deviceOrientation-alpha={164}
+                deviceOrientation-beta={121}
+            />
+            {/* <OrbitControls ref={orbitcontrols} target={[5, 0, 0]} /> */}
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
@@ -129,9 +121,6 @@ function Scene() {
                 ]} // Array of cubemap files OR single equirectangular file
                 path={"assets/envmaps/gamrig_2k/"} // Path to the above file(s)
             /> */}
-
-            <Ground></Ground>
-            {/* <Stars /> */}
 
             <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
