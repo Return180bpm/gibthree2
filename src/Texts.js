@@ -9,7 +9,7 @@ import { getRandomInRange } from "./utils";
 // modify curveRadius around 100 to achieve flapping effect --- anchor ~ 86
 // make text flap + follow a line
 // loop through anchorX with a small curveRadius to achieve chasing tail rotation
-export const TextAnimFlying = ({ refCallback }) => {
+export const TextAnimFlying = ({}) => {
     const textRef = React.useRef(null);
     let v = 0;
     let v2 = 0;
@@ -60,7 +60,7 @@ export const TextAnimFlying = ({ refCallback }) => {
         <Text
             ref={textRef}
             font={"ultra.ttf"}
-            position={[-50, 206, 100]}
+            position={[-43, 450, -230]}
             anchorX={86}
             anchorY={50}
             rotation={[5, 0, 0]}

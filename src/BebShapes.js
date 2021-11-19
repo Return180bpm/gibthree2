@@ -118,10 +118,10 @@ export const BebDice = ({}) => {
 
     useFrame(() => {
         if (bebDiceRef.current) {
-            bebDiceRef.current.rotation.x = -Math.PI * 2 * v;
+            bebDiceRef.current.rotation.z = -Math.PI * 2 * v;
             v += 0.002;
             const currentRotationRoundedOffset = Number.parseFloat(
-                Math.abs(bebDiceRef.current.rotation.x + Math.PI * 1.5).toFixed(
+                Math.abs(bebDiceRef.current.rotation.z + Math.PI * 1.5).toFixed(
                     2
                 )
             );
@@ -147,10 +147,10 @@ export const BebDice = ({}) => {
         <mesh
             ref={bebDiceRef}
             material={materials}
-            position={[27, 14, 66]}
-            rotation={[0, 2, 0]}
+            position={[-200, 159, 36]}
+            rotation={[-1, 0.1, 0]}
         >
-            <boxGeometry args={[40, 40, 40, 1, 1, 1]} />
+            <boxGeometry args={[80, 80, 80, 1, 1, 1]} />
             {/* <meshLambertMaterial /> */}
         </mesh>
     );

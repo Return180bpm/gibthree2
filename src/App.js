@@ -65,9 +65,9 @@ function Scene() {
     const textRefCallback = useCallback(node => {
         if (node !== null) {
             const Folder = gui.addFolder("Text");
-            Folder.add(node.position, "x", -200, 200);
-            Folder.add(node.position, "y", -200, 200);
-            Folder.add(node.position, "z", -200, 200);
+            Folder.add(node.position, "x", -500, 500);
+            Folder.add(node.position, "y", -500, 500);
+            Folder.add(node.position, "z", -500, 500);
             Folder.add(node.rotation, "x", 0, 2 * Math.PI);
             Folder.add(node.rotation, "y", 0, 2 * Math.PI);
             Folder.add(node.rotation, "z", 0, 2 * Math.PI);
@@ -75,6 +75,22 @@ function Scene() {
             Folder.add(node, "anchorX", -300, 300);
             Folder.add(node, "anchorY", -300, 300);
             Folder.open();
+
+            // target: Array;
+            // deviceOrientation: alpha beta gamma
+        }
+    }, []);
+    const bebDiceRef = useCallback(node => {
+        if (node !== null) {
+            const Folder = gui.addFolder("BebDice");
+            Folder.add(node.position, "x", -200, 200);
+            Folder.add(node.position, "y", -200, 200);
+            Folder.add(node.position, "z", -200, 200);
+            Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
+            Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
+            Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
+
+            // Folder.open();
 
             // target: Array;
             // deviceOrientation: alpha beta gamma
@@ -143,9 +159,9 @@ function Scene() {
             <pointLight position={[-1, 2, 4]} />
 
             <Skybox />
-            <TextAnimFlying refCallback={textRefCallback} />
+            <TextAnimFlying textRef={textRefCallback} />
 
-            <BebDice></BebDice>
+            <BebDice bebDiceRef={bebDiceRef}></BebDice>
             <BebPillar bebRefCallback={bebRefCallback}></BebPillar>
 
             <group position={[1, 1, 1]}>
