@@ -19,6 +19,7 @@ import { Suspense } from "react/cjs/react.production.min";
 
 import Dat from "dat.gui";
 import init from "three-dat.gui";
+import { TextAnimFlying } from "./Texts.js";
 init(Dat);
 
 var gui = new Dat.GUI();
@@ -60,7 +61,7 @@ function Scene() {
             // deviceOrientation: alpha beta gamma
         }
     }, []);
-    const textref = useCallback(node => {
+    const textRefCallback = useCallback(node => {
         if (node !== null) {
             const Folder = gui.addFolder("Text");
             Folder.add(node.position, "x", -200, 200);
@@ -114,50 +115,18 @@ function Scene() {
                     labelColor="black"
                 />
             </GizmoHelper>
-            <DeviceOrientationControls
+            {/* <DeviceOrientationControls
                 ref={devicecontrols}
                 deviceOrientation-alpha={164}
                 deviceOrientation-beta={121}
-            />
-            {/* <OrbitControls ref={orbitcontrols} target={[5, 0, 0]} /> */}
+            /> */}
+            <OrbitControls target={[5, 0, 0]} />
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
 
             <Skybox />
-            <Text
-                ref={textref}
-                font={"ultra.ttf"}
-                position={[12, 106, 120]}
-                anchorX={0}
-                anchorY={0}
-                rotation={[5, 0, 0]}
-                orientation="-x+y"
-                curveRadius={50}
-                fontSize={80}
-                color="crimson" // default
-                strokeWidth={1.7}
-                strokeColor={"chartreuse"}
-                outlineWidth={"2%"}
-                outlineOffsetX={3}
-                outlineOffsetY={3}
-                outlineColor={"cyan"}
-            >
-                beb
-            </Text>
-
-            {/* <Environment
-                background={false} // Whether to affect scene.background
-                files={[
-                    "px.png",
-                    "nx.png",
-                    "py.png",
-                    "ny.png",
-                    "pz.png",
-                    "nz.png",
-                ]} // Array of cubemap files OR single equirectangular file
-                path={"assets/envmaps/gamrig_2k/"} // Path to the above file(s)
-            /> */}
+            <TextAnimFlying refCallback={textRefCallback} />
 
             <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
