@@ -1,7 +1,7 @@
 import "./App.css";
 import { CubeTextureLoader } from "three";
 import { useEffect, useCallback, useLayoutEffect, useRef } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
     useTexture,
     GizmoHelper,
@@ -15,6 +15,7 @@ import {
 } from "@react-three/drei";
 
 import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
+import { BebDice } from "./BebShapes";
 import { Suspense } from "react/cjs/react.production.min";
 
 import Dat from "dat.gui";
@@ -79,6 +80,22 @@ function Scene() {
             // deviceOrientation: alpha beta gamma
         }
     }, []);
+    const bebDiceRef = useCallback(node => {
+        if (node !== null) {
+            const Folder = gui.addFolder("BebDice");
+            Folder.add(node.position, "x", -200, 200);
+            Folder.add(node.position, "y", -200, 200);
+            Folder.add(node.position, "z", -200, 200);
+            Folder.add(node.rotation, "x", 0, 2 * Math.PI);
+            Folder.add(node.rotation, "y", 0, 2 * Math.PI);
+            Folder.add(node.rotation, "z", 0, 2 * Math.PI);
+
+            Folder.open();
+
+            // target: Array;
+            // deviceOrientation: alpha beta gamma
+        }
+    }, []);
 
     // useLayoutEffect(() => {
     //     const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
@@ -127,6 +144,8 @@ function Scene() {
 
             <Skybox />
             <TextAnimFlying refCallback={textRefCallback} />
+
+            <BebDice bebDiceRef={bebDiceRef}></BebDice>
 
             <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
