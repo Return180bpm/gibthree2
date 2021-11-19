@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import React, { useRef, useMemo, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 export const BebPillar = ({ bebRefCallback }) => {
     useEffect(() => {
@@ -33,8 +34,14 @@ export const BebPillar = ({ bebRefCallback }) => {
 const BebFoods = () => {
     return (
         <>
-            {bebFoodPoints().map(bebFoodPoint => {
-                return <BebFood pos={bebFoodPoint}></BebFood>;
+            {bebFoodPoints().map((bebFoodPoint, i) => {
+                return (
+                    <BebFood
+                        pos={bebFoodPoint}
+                        textureFileName={`${i + 1}.jpeg`}
+                        key={i}
+                    ></BebFood>
+                );
             })}
         </>
     );
@@ -42,10 +49,10 @@ const BebFoods = () => {
 
 const bebFoodPoints = () => {
     const resultArr = [];
-    const num = 3;
+    const num = 5;
     const r = 100;
     const first = [77, 36, 66];
-    for (let i = 0; i <= num; i++) {
+    for (let i = 0; i < num; i++) {
         // const element = array[i];
         const x = first[0] + r * Math.cos(((Math.PI * 2) / num) * i);
         const z = first[2] + r * Math.sin(((Math.PI * 2) / num) * i);
@@ -55,11 +62,20 @@ const bebFoodPoints = () => {
     return resultArr;
 };
 
-const BebFood = ({ pos }) => {
+const BebFood = ({ pos, textureFileName }) => {
     const bebRef = useRef(null);
     const p = new THREE.Vector3(0, 0, 50);
     const ax = new THREE.Vector3(0, 10, 0);
     let v = 0;
+
+    // const foodTexture = useMemo(() => {
+    const path = "/assets/foods/";
+    //     return new THREE.MeshLambertMaterial({
+    //         map: new THREE.TextureLoader().load(path+textureFileName),
+    //     });
+
+    // }, []);
+    const foodTexture = useLoader(TextureLoader, path + textureFileName);
 
     useFrame(() => {
         if (bebRef.current) {
@@ -69,7 +85,7 @@ const BebFood = ({ pos }) => {
     return (
         <mesh ref={bebRef} position={pos} rotation={[0, 0, 0]}>
             <boxGeometry args={[40, 40, 40, 1, 1, 1]} />
-            <meshLambertMaterial />
+            <meshLambertMaterial map={foodTexture} />
         </mesh>
     );
 };

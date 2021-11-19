@@ -195,7 +195,10 @@ function Scene() {
 function App() {
     return (
         <>
-            <Canvas camera={{ fov: 120, position: [0, 0.4, 6.2] }}>
+            <Canvas
+                colorManagement={true}
+                camera={{ fov: 120, position: [0, 0.4, 6.2] }}
+            >
                 <Suspense fallback={null}>
                     <Scene />
                 </Suspense>
