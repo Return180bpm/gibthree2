@@ -3,6 +3,7 @@ import React, { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 
 export const BebDice = ({}) => {
+    let v = 0;
     const bebFaces = useMemo(() => {
         const resultArr = [];
         for (let fileIndex = 0; fileIndex < 7; fileIndex++) {
@@ -29,11 +30,19 @@ export const BebDice = ({}) => {
 
     useFrame(() => {
         if (bebDiceRef.current) {
-            bebDiceRef.current.rotation.x -= 0.01;
-            const currentRotation = Number.parseFloat(
-                Math.abs(Math.sin(bebDiceRef.current.rotation.x))
-            ).toFixed(2);
-            if (currentRotation < 0.1) {
+            bebDiceRef.current.rotation.x = -Math.PI * 2 * v;
+            v += 0.002;
+            const currentRotationRoundedOffset = Number.parseFloat(
+                Math.abs(bebDiceRef.current.rotation.x + Math.PI * 1.5).toFixed(
+                    2
+                )
+            );
+
+            if (
+                Number.parseFloat(currentRotationRoundedOffset % 3.14).toFixed(
+                    2
+                ) < 0.02
+            ) {
                 bebFacesIndex.current =
                     (bebFacesIndex.current + 1) % bebFaces.length;
                 const currentTexture = bebFaces[bebFacesIndex.current];
