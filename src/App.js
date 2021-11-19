@@ -115,12 +115,12 @@ function Scene() {
                     labelColor="black"
                 />
             </GizmoHelper>
-            {/* <DeviceOrientationControls
+            <DeviceOrientationControls
                 ref={devicecontrols}
                 deviceOrientation-alpha={164}
                 deviceOrientation-beta={121}
-            /> */}
-            <OrbitControls target={[5, 0, 0]} />
+            />
+            {/* <OrbitControls target={[5, 0, 0]} /> */}
 
             <ambientLight />
             <pointLight position={[-1, 2, 4]} />
