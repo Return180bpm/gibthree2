@@ -21,9 +21,9 @@ import { Suspense } from "react/cjs/react.production.min";
 import Dat from "dat.gui";
 import init from "three-dat.gui";
 import { TextAnimFlying } from "./Texts.js";
-init(Dat);
+// init(Dat);
 
-var gui = new Dat.GUI();
+// var gui = new Dat.GUI();
 
 function Skybox() {
     const { scene } = useThree();
@@ -51,67 +51,67 @@ function Scene() {
     //         orbitcontrolsFolder.add(node.target, "z", 0, Math.PI * 2);
     //     }
     // }, []);
-    const devicecontrols = useCallback(node => {
-        if (node !== null) {
-            const Folder = gui.addFolder("DeviceControls");
-            Folder.add(node.deviceOrientation, "alpha", 0, 360);
-            Folder.add(node.deviceOrientation, "beta", 0, 360);
-            Folder.add(node.deviceOrientation, "gamma", 0, 360);
+    // const devicecontrols = useCallback(node => {
+    //     if (node !== null) {
+    //         const Folder = gui.addFolder("DeviceControls");
+    //         Folder.add(node.deviceOrientation, "alpha", 0, 360);
+    //         Folder.add(node.deviceOrientation, "beta", 0, 360);
+    //         Folder.add(node.deviceOrientation, "gamma", 0, 360);
 
-            // target: Array;
-            // deviceOrientation: alpha beta gamma
-        }
-    }, []);
-    const textRefCallback = useCallback(node => {
-        if (node !== null) {
-            const Folder = gui.addFolder("Text");
-            Folder.add(node.position, "x", -500, 500);
-            Folder.add(node.position, "y", -500, 500);
-            Folder.add(node.position, "z", -500, 500);
-            Folder.add(node.rotation, "x", 0, 2 * Math.PI);
-            Folder.add(node.rotation, "y", 0, 2 * Math.PI);
-            Folder.add(node.rotation, "z", 0, 2 * Math.PI);
-            Folder.add(node, "curveRadius", 0, 1000);
-            Folder.add(node, "anchorX", -300, 300);
-            Folder.add(node, "anchorY", -300, 300);
-            Folder.open();
+    //         // target: Array;
+    //         // deviceOrientation: alpha beta gamma
+    //     }
+    // }, []);
+    // const textRefCallback = useCallback(node => {
+    //     if (node !== null) {
+    //         const Folder = gui.addFolder("Text");
+    //         Folder.add(node.position, "x", -500, 500);
+    //         Folder.add(node.position, "y", -500, 500);
+    //         Folder.add(node.position, "z", -500, 500);
+    //         Folder.add(node.rotation, "x", 0, 2 * Math.PI);
+    //         Folder.add(node.rotation, "y", 0, 2 * Math.PI);
+    //         Folder.add(node.rotation, "z", 0, 2 * Math.PI);
+    //         Folder.add(node, "curveRadius", 0, 1000);
+    //         Folder.add(node, "anchorX", -300, 300);
+    //         Folder.add(node, "anchorY", -300, 300);
+    //         Folder.open();
 
-            // target: Array;
-            // deviceOrientation: alpha beta gamma
-        }
-    }, []);
-    const bebDiceRef = useCallback(node => {
-        if (node !== null) {
-            const Folder = gui.addFolder("BebDice");
-            Folder.add(node.position, "x", -200, 200);
-            Folder.add(node.position, "y", -200, 200);
-            Folder.add(node.position, "z", -200, 200);
-            Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
-            Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
-            Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
+    //         // target: Array;
+    //         // deviceOrientation: alpha beta gamma
+    //     }
+    // }, []);
+    // const bebDiceRef = useCallback(node => {
+    //     if (node !== null) {
+    //         const Folder = gui.addFolder("BebDice");
+    //         Folder.add(node.position, "x", -200, 200);
+    //         Folder.add(node.position, "y", -200, 200);
+    //         Folder.add(node.position, "z", -200, 200);
+    //         Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
+    //         Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
+    //         Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
 
-            // Folder.open();
+    //         // Folder.open();
 
-            // target: Array;
-            // deviceOrientation: alpha beta gamma
-        }
-    }, []);
-    const allPurposeRef = useCallback(node => {
-        if (node !== null) {
-            const Folder = gui.addFolder("BebShape");
-            Folder.add(node.position, "x", -400, 400);
-            Folder.add(node.position, "y", -400, 400);
-            Folder.add(node.position, "z", -400, 400);
-            Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
-            Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
-            Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
+    //         // target: Array;
+    //         // deviceOrientation: alpha beta gamma
+    //     }
+    // }, []);
+    // const allPurposeRef = useCallback(node => {
+    //     if (node !== null) {
+    //         const Folder = gui.addFolder("BebShape");
+    //         Folder.add(node.position, "x", -400, 400);
+    //         Folder.add(node.position, "y", -400, 400);
+    //         Folder.add(node.position, "z", -400, 400);
+    //         Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
+    //         Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
+    //         Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
 
-            Folder.open();
+    //         Folder.open();
 
-            // target: Array;
-            // deviceOrientation: alpha beta gamma
-        }
-    }, []);
+    //         // target: Array;
+    //         // deviceOrientation: alpha beta gamma
+    //     }
+    // }, []);
 
     // useLayoutEffect(() => {
     //     const perspectiveCameraFolder = gui.addFolder("Perspective Camera");
@@ -142,14 +142,7 @@ function Scene() {
 
     return (
         <>
-            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                <GizmoViewport
-                    axisColors={["red", "green", "blue"]}
-                    labelColor="black"
-                />
-            </GizmoHelper>
             <DeviceOrientationControls
-                ref={devicecontrols}
                 deviceOrientation-alpha={164}
                 deviceOrientation-beta={121}
             />
@@ -159,7 +152,7 @@ function Scene() {
             <pointLight position={[-1, 2, 4]} intensity={0.3} />
 
             <Skybox />
-            <TextAnimFlying textRef={textRefCallback} />
+            <TextAnimFlying />
 
             {/* <BebDice bebDiceRef={bebDiceRef}></BebDice> */}
             <BebPillar></BebPillar>
@@ -208,11 +201,7 @@ function Scene() {
             <group position={[-458, 0, 800]} rotation={[0.009, -0.41, 0.009]}>
                 <CubeWall width={20} height={30} />
             </group>
-            <group
-                ref={allPurposeRef}
-                position={[53, 44.7, 9]}
-                rotation={[-4.84, -1.4, 0.29]}
-            >
+            <group position={[53, 44.7, 9]} rotation={[-4.84, -1.4, 0.29]}>
                 <OscillatingShape num={30} />
             </group>
         </>
