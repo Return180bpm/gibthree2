@@ -4,7 +4,9 @@ import { useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+
+import { useFrame, useLoader } from "@react-three/fiber";
 import { Ground, Cylinder, Circle, Ball, Cube } from "./shapes.js";
 import {
     getRandomInRange,
@@ -188,7 +190,7 @@ function Columns({ amount }) {
 function OscillatingShape({ num = 10 }) {
     const shapes = [];
     let ref = useRef(null);
-    const sizeOfPoint = [1, 1, 1];
+    const sizeOfPoint = [2, 2, 2];
     let yV = 0;
     let blue = 0;
 
@@ -241,28 +243,46 @@ function OscillatingShape({ num = 10 }) {
             shape.material.color.b = blue;
 
             //DEFORM
-            shape.scale.y = range(
-                -1,
-                1,
-                0.8,
-                1.2,
-                Math.sin(shape.position.y * 5)
-            );
-
+            if (i === 0) {
+                shape.scale.y = range(
+                    -1,
+                    1,
+                    6.5,
+                    7.5,
+                    Math.sin(shape.position.y)
+                );
+            }
+            if (i !== 0) {
+                shape.scale.y = range(
+                    -1,
+                    1,
+                    0.8,
+                    1.2,
+                    Math.sin(shape.position.y * 5)
+                );
+            }
             // Y VELOCITY. how fast it's going
             yV += 0.004;
         }
     });
 
+    const headAtomTexture = useLoader(TextureLoader, "/assets/02.jpeg");
     useMemo(() => {
         for (let i = 0; i < num; i++) {
+            const scaleOfAtom = i === 0 ? 7 : 1;
+            const map = i === 0 ? headAtomTexture : "";
             shapes.push(
-                <mesh position={[i, 0, 0]} key={i}>
+                <mesh
+                    position={[i * sizeOfPoint[0] * scaleOfAtom, 0, 0]}
+                    scale={scaleOfAtom}
+                    key={i}
+                >
                     <boxBufferGeometry args={sizeOfPoint} />
                     <meshStandardMaterial
                         roughness={0.5}
                         attach="material"
-                        color={"black"}
+                        color={i === 0 ? "yellow" : "green"}
+                        map={map}
                     />
                 </mesh>
             );
@@ -271,7 +291,8 @@ function OscillatingShape({ num = 10 }) {
 
     // return a group representing the whole oscillation. position it around 0 on the x-axis
     return (
-        <group ref={ref} position={[(-sizeOfPoint[0] * num) / 2, 3, 0]}>
+        // <group ref={ref} position={[(-sizeOfPoint[0] * num) / 2, 3, 0]}>
+        <group ref={ref} position={[0, 0, 0]}>
             {shapes.length && shapes.map(shape => shape)}
         </group>
     );

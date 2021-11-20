@@ -200,11 +200,7 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group> */}
-            <group
-                ref={allPurposeRef}
-                position={[-123, 18.3, 27]}
-                rotation={[0.01, -2.9, 0.7]}
-            >
+            <group position={[-123, 18.3, 27]} rotation={[0.01, -2.9, 0.7]}>
                 <Spiral position={[0, -10, 5]} />
             </group>
             {/* <CubeTextured /> */}
@@ -212,7 +208,13 @@ function Scene() {
             <group position={[-458, 0, 800]} rotation={[0.009, -0.41, 0.009]}>
                 <CubeWall width={20} height={30} />
             </group>
-            {/* <OscillatingShape num={30} /> */}
+            <group
+                ref={allPurposeRef}
+                position={[53, 44.7, 9]}
+                rotation={[-4.84, -1.4, 0.29]}
+            >
+                <OscillatingShape num={30} />
+            </group>
         </>
     );
 }
