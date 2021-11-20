@@ -96,12 +96,12 @@ function Scene() {
             // deviceOrientation: alpha beta gamma
         }
     }, []);
-    const bebRefCallback = useCallback(node => {
+    const allPurposeRef = useCallback(node => {
         if (node !== null) {
             const Folder = gui.addFolder("BebShape");
-            Folder.add(node.position, "x", -800, 800);
-            Folder.add(node.position, "y", -800, 800);
-            Folder.add(node.position, "z", -800, 800);
+            Folder.add(node.position, "x", -400, 400);
+            Folder.add(node.position, "y", -400, 400);
+            Folder.add(node.position, "z", -400, 400);
             Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
             Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
             Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
@@ -155,15 +155,15 @@ function Scene() {
             />
             {/* <OrbitControls target={[5, 0, 0]} /> */}
 
-            <ambientLight />
-            <pointLight position={[-1, 2, 4]} />
+            <ambientLight intensity={0.1} />
+            <pointLight position={[-1, 2, 4]} intensity={0.3} />
 
             <Skybox />
             <TextAnimFlying textRef={textRefCallback} />
 
             {/* <BebDice bebDiceRef={bebDiceRef}></BebDice> */}
-            {/* <BebPillar></BebPillar> */}
-            <BebsLooking bebRefCallback={bebRefCallback}></BebsLooking>
+            <BebPillar></BebPillar>
+            <BebsLooking></BebsLooking>
 
             {/* <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
@@ -200,10 +200,18 @@ function Scene() {
                     color1={"crimson"}
                 />
             </group> */}
-            {/* <Spiral position={[0, -10, 5]} /> */}
+            <group
+                ref={allPurposeRef}
+                position={[-123, 18.3, 27]}
+                rotation={[0.01, -2.9, 0.7]}
+            >
+                <Spiral position={[0, -10, 5]} />
+            </group>
             {/* <CubeTextured /> */}
             {/* <Columns amount={20} /> */}
-            {/* <CubeWall width={20} height={20} /> */}
+            <group position={[-458, 0, 800]} rotation={[0.009, -0.41, 0.009]}>
+                <CubeWall width={20} height={30} />
+            </group>
             {/* <OscillatingShape num={30} /> */}
         </>
     );

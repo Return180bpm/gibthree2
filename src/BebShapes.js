@@ -44,7 +44,8 @@ export const BebPillar = ({ bebRefCallback }) => {
         })();
     }, []);
     return (
-        <group>
+        <group position={[-300, 159, 36]}>
+            <BebDice />
             <BebFoods></BebFoods>
         </group>
     );
@@ -68,8 +69,9 @@ const BebFoods = () => {
 const bebFoodPoints = () => {
     const resultArr = [];
     const num = 5;
-    const r = 100;
-    const first = [77, 36, 66];
+    const r = 200;
+    // const first = [77, 36, 66];
+    const first = [-30, -20, -80];
     for (let i = 0; i < num; i++) {
         // const element = array[i];
         const x = first[0] + r * Math.cos(((Math.PI * 2) / num) * i);
@@ -82,7 +84,7 @@ const bebFoodPoints = () => {
 
 const BebFood = ({ pos, textureFileName }) => {
     const bebRef = useRef(null);
-    const p = new THREE.Vector3(0, 0, 50);
+    const p = new THREE.Vector3(0, 0, 0);
     const ax = new THREE.Vector3(0, 10, 0);
     let v = 0;
 
@@ -102,7 +104,7 @@ const BebFood = ({ pos, textureFileName }) => {
     });
     return (
         <mesh ref={bebRef} position={pos} rotation={[0, 0, 0]}>
-            <boxGeometry args={[40, 40, 40, 1, 1, 1]} />
+            <boxGeometry args={[60, 60, 60, 1, 1, 1]} />
             <meshLambertMaterial map={foodTexture} />
         </mesh>
     );
@@ -124,11 +126,11 @@ export const BebDice = ({}) => {
 
     const bebFacesIndex = useRef(0);
     const blankFaces = [
-        new THREE.MeshLambertMaterial({ color: "red" }),
+        new THREE.MeshLambertMaterial({ color: "purple" }),
         new THREE.MeshLambertMaterial({ color: "blue" }),
         new THREE.MeshLambertMaterial({ color: "yellow" }),
         new THREE.MeshLambertMaterial({ color: "blue" }),
-        new THREE.MeshLambertMaterial({ color: "green" }),
+        new THREE.MeshLambertMaterial({ color: "purple" }),
     ];
     const materials = [bebFaceFirst].concat(blankFaces);
 
@@ -165,10 +167,11 @@ export const BebDice = ({}) => {
         <mesh
             ref={bebDiceRef}
             material={materials}
-            position={[-200, 159, 36]}
+            position={(0, 0, 0)}
+            // position={[-300, 159, 36]}
             rotation={[-1, 0.1, 0]}
         >
-            <boxGeometry args={[80, 80, 80, 1, 1, 1]} />
+            <boxGeometry args={[120, 200, 120, 1, 1, 1]} />
             {/* <meshLambertMaterial /> */}
         </mesh>
     );

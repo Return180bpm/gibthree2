@@ -35,17 +35,17 @@ function Spiral({
 
     let groupRef = useRef(null);
 
-    let playfactor = 0;
-    let colors = ["r", "g", "b"];
+    // let playfactor = 0;
+    // let colors = ["r", "g", "b"];
     let colorCounter = 0;
     let colorValue = 1;
-    let colorIndex = 0;
-    let rounds = 0;
-    let colorObj = { r: 0.2, g: 1, b: 0.4 };
+    // let colorIndex = 0;
+    // let rounds = 0;
+    // let colorObj = { r: 0.2, g: 1, b: 0.4 };
     // let colorToMod = colors[0];
 
-    let prevTime = 0,
-        currTime;
+    // let prevTime = 0,
+    //     currTime;
 
     // DIFFERENT ANIMATIONS
     //
@@ -61,7 +61,8 @@ function Spiral({
             colorValue = range(-1, 1, 0, 20, Math.sin(j + colorCounter));
             shape.material.color.b = colorValue;
         }
-        colorCounter -= 0.005;
+        groupRef.current.rotation.y += 0.02;
+        colorCounter -= 0.05;
     });
 
     // modifies colors randomly
@@ -284,7 +285,7 @@ function CubeWall({ width, height }) {
     let cubeArr = [];
     let colorMod;
     let v = 0;
-    const sizeOfCube = [0.5, 0.5, 0.5];
+    const sizeOfCube = [10, 10, 10];
     // const separation = 1;
     let group = useRef();
 
@@ -296,22 +297,22 @@ function CubeWall({ width, height }) {
                 (row % 2 === 0 && col % 2 === 0) ||
                 (row % 2 === 1 && col % 2 === 1)
             ) {
-                const interPolNum =
-                    (cubeArr.length * 256) / ((width / 2) * height);
-                const _colorMod = invlerp(0, width + height, row + col) * 256;
+                // const interPolNum =
+                //     (cubeArr.length * 256) / ((width / 2) * height);
+                // const _colorMod = invlerp(0, width + height, row + col) * 256;
                 colorMod = range(-1, 1, 0, 256, Math.sin(col + row));
                 const currentColor = `#00${hex(Math.round(colorMod))}00`;
                 cubeArr.push(
                     <Cube
                         key={cubeArr.length}
                         size={sizeOfCube}
-                        pos={[
+                        position={[
                             col * sizeOfCube[0],
                             row * sizeOfCube[1] + sizeOfCube[1] * 0.5,
                             0,
                         ]}
                         posXY={{ x: col, y: row }}
-                        color1={currentColor}
+                        color={currentColor}
                         color2="black"
                         rotV={(row + col) / 2000 + 0.001}
                         rotA={(row + col) * 0.001}
@@ -332,18 +333,13 @@ function CubeWall({ width, height }) {
             const cube = group.current.children[i];
 
             cube.scale.z = range(-1, 1, 0.8, 2, Math.sin(i + v));
-            cube.children[0].material.color.g = range(
-                -1,
-                1,
-                0.2,
-                1,
-                Math.sin(i + v * 5)
-            );
+            cube.material.color.g = range(-1, 1, 0.2, 1, Math.sin(i + v * 5));
         }
         v += 0.01;
     });
     return (
-        <group ref={group} position={[(-sizeOfCube[0] * width) / 2, 0, -10]}>
+        // <group ref={group} position={[(-sizeOfCube[0] * width) / 2, 0, -10]}>
+        <group ref={group} position={[0, 0, 0]}>
             {cubeArr.length && cubeArr.map(cube => cube)}
         </group>
     );
