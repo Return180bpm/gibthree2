@@ -15,7 +15,7 @@ import {
 } from "@react-three/drei";
 
 import { CubeWall, OscillatingShape, Spiral } from "./generators.js";
-import { BebDice, BebPillar } from "./BebShapes";
+import { BebDice, BebPillar, BebsLooking } from "./BebShapes";
 import { Suspense } from "react/cjs/react.production.min";
 
 import Dat from "dat.gui";
@@ -99,9 +99,9 @@ function Scene() {
     const bebRefCallback = useCallback(node => {
         if (node !== null) {
             const Folder = gui.addFolder("BebShape");
-            Folder.add(node.position, "x", -200, 200);
-            Folder.add(node.position, "y", -200, 200);
-            Folder.add(node.position, "z", -200, 200);
+            Folder.add(node.position, "x", -800, 800);
+            Folder.add(node.position, "y", -800, 800);
+            Folder.add(node.position, "z", -800, 800);
             Folder.add(node.rotation, "x", -2 * Math.PI, 2 * Math.PI);
             Folder.add(node.rotation, "y", -2 * Math.PI, 2 * Math.PI);
             Folder.add(node.rotation, "z", -2 * Math.PI, 2 * Math.PI);
@@ -161,15 +161,16 @@ function Scene() {
             <Skybox />
             <TextAnimFlying textRef={textRefCallback} />
 
-            <BebDice bebDiceRef={bebDiceRef}></BebDice>
-            <BebPillar bebRefCallback={bebRefCallback}></BebPillar>
+            {/* <BebDice bebDiceRef={bebDiceRef}></BebDice> */}
+            {/* <BebPillar></BebPillar> */}
+            <BebsLooking bebRefCallback={bebRefCallback}></BebsLooking>
 
-            <group position={[1, 1, 1]}>
+            {/* <group position={[1, 1, 1]}>
                 <pointLight position={[0, 0, 0]} />
                 <Box ref={cube} position={[2, 1, 2]}>
                     <meshStandardMaterial />
                 </Box>
-            </group>
+            </group> */}
             {/* <Cube size={[5, 1, 2]} pos={[0, 2, -6]} color2="black" /> */}
             {/* <group position={[5, 0.1, 0]}>
                 <Ball

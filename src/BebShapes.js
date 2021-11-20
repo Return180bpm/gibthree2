@@ -3,6 +3,24 @@ import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 
+export const BebsLooking = ({ bebRefCallback }) => {
+    const bebsTexture = useLoader(
+        TextureLoader,
+        "/assets/gitom/bebs_looking.jpeg"
+    );
+
+    return (
+        <mesh
+            ref={bebRefCallback}
+            position={[159, 27, -800]}
+            rotation={[0.56, -0.27, 0.1]}
+        >
+            <boxGeometry args={[450, 600, 20, 1, 1, 1]} />
+            <meshLambertMaterial map={bebsTexture} />
+        </mesh>
+    );
+};
+
 export const BebPillar = ({ bebRefCallback }) => {
     useEffect(() => {
         THREE.Object3D.prototype.rotateAroundWorldAxis = (function () {
